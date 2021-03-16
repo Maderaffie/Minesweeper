@@ -24,7 +24,9 @@ namespace Minesweeper
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            var mainViewModel = new MainViewModel();
+            DataContext = mainViewModel;
+            SizeChanged += mainViewModel.OnWindowSizeChanged;
         }
     }
 }
