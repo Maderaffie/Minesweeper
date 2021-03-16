@@ -1,8 +1,10 @@
 ﻿using Minesweeper.Commands;
+using Minesweeper.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,12 +15,14 @@ namespace Minesweeper.ViewModels
     {
         public ObservableCollection<Grid> BoardGrid { get; set; }
         public BaseCommand AddBoardGridCommand { get; set; }
+        public GameButtonCommand GameButtonCommand { get; set; }
         public double WindowWidth { get; set; }
         public double WindowHeight { get; set; }
         public double BoardGridWidth { get; set; }
         public double BoardGridHeight { get; set; }
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
+        public List<GameField> GameFields { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -26,8 +30,10 @@ namespace Minesweeper.ViewModels
         {
             NumberOfColumns = 5;
             NumberOfRows = 5;
+            GameFields = new List<GameField>();
             Grid sampleGrid = new Grid();
             sampleGrid.ShowGridLines = true;
+            GameButtonCommand = new GameButtonCommand(this);
             for (int i = 0; i < 5; i++)
             {
                 sampleGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -38,6 +44,10 @@ namespace Minesweeper.ViewModels
                 for (int j = 0; j < 5; j++)
                 {
                     Button button = new Button();
+                    GameFields.Add(new GameField(button, i, j));
+                    button.Name = "r" + i + "c" + j;
+                    button.Command = GameButtonCommand;
+                    button.CommandParameter = button.Name;
                     Grid.SetColumn(button, j);
                     Grid.SetRow(button, i);
                     sampleGrid.Children.Add(button);
@@ -45,6 +55,7 @@ namespace Minesweeper.ViewModels
             }
             BoardGrid = new ObservableCollection<Grid>() { sampleGrid };
             AddBoardGridCommand = new BaseCommand(CreateNewGameBoard);
+
         }
 
         public void SetBoardGridSize()
@@ -75,7 +86,6 @@ namespace Minesweeper.ViewModels
             SetBoardGridSize();
         }
 
-
         public void CreateNewGameBoard()
         {
             Grid grid = new Grid();
@@ -102,6 +112,11 @@ namespace Minesweeper.ViewModels
                 }
             }
             BoardGrid[0] = grid;
+        }
+
+        public void HandleGameFieldClick(GameField gameField)
+        {
+            Debug.WriteLine("I got " + gameField.Name);
         }
     }
 }
