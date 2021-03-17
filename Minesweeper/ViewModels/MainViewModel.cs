@@ -28,6 +28,7 @@ namespace Minesweeper.ViewModels
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
         public int NumberOfMines { get; set; }
+        public int MinesLeft { get; set; }
         public List<GameField> GameFields { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -39,6 +40,7 @@ namespace Minesweeper.ViewModels
             NumberOfColumns = 9;
             NumberOfRows = 9;
             NumberOfMines = 10;
+            MinesLeft = NumberOfMines;
             GameFields = new List<GameField>();
             Grid sampleGrid = new Grid();
             sampleGrid.ShowGridLines = true;
@@ -58,6 +60,14 @@ namespace Minesweeper.ViewModels
                     button.Name = "r" + i + "c" + j;
                     button.Command = GameButtonCommand;
                     button.CommandParameter = button.Name;
+                    MouseGesture mouseGesture = new MouseGesture();
+                    mouseGesture.MouseAction = MouseAction.RightClick;
+                    MouseBinding mouseBinding = new MouseBinding();
+                    mouseBinding.Gesture = mouseGesture;
+                    mouseBinding.Command = GameButtonRightClickCommand;
+                    mouseBinding.CommandParameter = button.Name;
+
+                    button.InputBindings.Add(mouseBinding);
                     Grid.SetColumn(button, j);
                     Grid.SetRow(button, i);
                     sampleGrid.Children.Add(button);
@@ -103,6 +113,8 @@ namespace Minesweeper.ViewModels
             NumberOfRows = new Random().Next(5, 15);
             NumberOfColumns = new Random().Next(5, 15);
             NumberOfMines = new Random().Next(10, (NumberOfRows - 1) * (NumberOfColumns - 1));
+            MinesLeft = NumberOfMines;
+            PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
             GameFields = new List<GameField>();
             SetBoardGridSize();
             for (int i = 0; i < NumberOfRows; i++)
@@ -233,13 +245,16 @@ namespace Minesweeper.ViewModels
                 img.Source = new BitmapImage(new Uri("Resources/flag.png", UriKind.Relative));
                 gameField.Button.Content = img;
                 gameField.IsClickable = false;
+                MinesLeft--;
+                PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
             }
             else
             {
                 gameField.Button.Content = null;
                 gameField.IsClickable = true;
+                MinesLeft++;
+                PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
             }
-            
         }
     }
 }

@@ -6,13 +6,25 @@
         xmlns:local="clr-namespace:Minesweeper"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="BorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="Black" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="CornerRadius" Value="3" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="45"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="Create Grid" Command="{Binding AddBoardGridCommand}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Content="Create Grid" Command="{Binding AddBoardGridCommand}" Grid.ColumnSpan="2"/>
         <ItemsControl ItemsSource="{Binding BoardGrid}" Grid.Row="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -20,5 +32,13 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <Label HorizontalAlignment="Center">
+                Mines left:
+            </Label>
+            <Border Style="{StaticResource BorderStyle}" HorizontalAlignment="Center">
+                <Label Content="{Binding MinesLeft}" HorizontalAlignment="Center"/>
+            </Border>
+        </StackPanel>
     </Grid>
 </Window>
