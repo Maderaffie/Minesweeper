@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Minesweeper.ViewModels
 {
@@ -168,18 +170,22 @@ namespace Minesweeper.ViewModels
             return list;
         }
 
-        public void ShowField(GameField gameField)
+        public bool ShowField(GameField gameField)
         {
+            var img = new Image();
+            gameField.Button.IsEnabled = false;
             if (gameField.IsMine)
             {
-                gameField.Button.Content = "MINE";
-                return;
+                img.Source = new BitmapImage(new Uri("Resources/mine.png", UriKind.Relative));
+                gameField.Button.Content = img;
+                return false;
             }
-            gameField.Button.Content = gameField.NumberOfMinesAround;
-            gameField.Button.IsEnabled = false;
+            
             if (gameField.IsMine || gameField.NumberOfMinesAround != 0)
             {
-                return;
+                img.Source = new BitmapImage(new Uri("Resources/" + gameField.NumberOfMinesAround + ".png", UriKind.Relative));
+                gameField.Button.Content = img;
+                return true;
             }
             var fieldsAround = GetFieldsAround(gameField);
             fieldsAround = fieldsAround.Where(x => x.Button.IsEnabled == true).ToList();
@@ -187,6 +193,7 @@ namespace Minesweeper.ViewModels
             {
                 ShowField(field);
             }
+            return true;
         }
     }
 }
