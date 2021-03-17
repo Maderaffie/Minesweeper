@@ -133,6 +133,7 @@ namespace Minesweeper.ViewModels
                 gameStarted = true;
                 GenerateMines(gameField);
             }
+            ShowField(gameField);
         }
 
         public void GenerateMines(GameField gameField)
@@ -155,18 +156,6 @@ namespace Minesweeper.ViewModels
                 }
                 fieldsWithoutMine.Remove(randomField);
             }
-
-            foreach (var field in GameFields)
-            {
-                if (field.IsMine)
-                {
-                    field.Button.Content = "MINE";
-                }
-                else
-                {
-                    field.Button.Content = field.NumberOfMinesAround;
-                }
-            }
         }
 
         public List<GameField> GetFieldsAround(GameField gameField)
@@ -179,6 +168,25 @@ namespace Minesweeper.ViewModels
             return list;
         }
 
-        
+        public void ShowField(GameField gameField)
+        {
+            if (gameField.IsMine)
+            {
+                gameField.Button.Content = "MINE";
+                return;
+            }
+            gameField.Button.Content = gameField.NumberOfMinesAround;
+            gameField.Button.IsEnabled = false;
+            if (gameField.IsMine || gameField.NumberOfMinesAround != 0)
+            {
+                return;
+            }
+            var fieldsAround = GetFieldsAround(gameField);
+            fieldsAround = fieldsAround.Where(x => x.Button.IsEnabled == true).ToList();
+            foreach (var field in fieldsAround)
+            {
+                ShowField(field);
+            }
+        }
     }
 }
