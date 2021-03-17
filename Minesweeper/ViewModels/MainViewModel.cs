@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -19,6 +20,7 @@ namespace Minesweeper.ViewModels
         public ObservableCollection<Grid> BoardGrid { get; set; }
         public BaseCommand AddBoardGridCommand { get; set; }
         public GameButtonCommand GameButtonCommand { get; set; }
+        public GameButtonRightClickCommand GameButtonRightClickCommand { get; set; }
         public double WindowWidth { get; set; }
         public double WindowHeight { get; set; }
         public double BoardGridWidth { get; set; }
@@ -41,6 +43,7 @@ namespace Minesweeper.ViewModels
             Grid sampleGrid = new Grid();
             sampleGrid.ShowGridLines = true;
             GameButtonCommand = new GameButtonCommand(this);
+            GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
             for (int i = 0; i < 9; i++)
             {
                 sampleGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -119,6 +122,16 @@ namespace Minesweeper.ViewModels
                     button.Name = "r" + i + "c" + j;
                     button.Command = GameButtonCommand;
                     button.CommandParameter = button.Name;
+
+                    MouseGesture mouseGesture = new MouseGesture();
+                    mouseGesture.MouseAction = MouseAction.RightClick;
+                    MouseBinding mouseBinding = new MouseBinding();
+                    mouseBinding.Gesture = mouseGesture;
+                    mouseBinding.Command = GameButtonRightClickCommand;
+                    mouseBinding.CommandParameter = button.Name;
+
+                    button.InputBindings.Add(mouseBinding);
+
                     Grid.SetColumn(button, j);
                     Grid.SetRow(button, i);
                     grid.Children.Add(button);
@@ -135,7 +148,10 @@ namespace Minesweeper.ViewModels
                 gameStarted = true;
                 GenerateMines(gameField);
             }
-            ShowField(gameField);
+            if(ShowField(gameField) == false)
+            {
+                RevealAllMines(gameField);
+            }
         }
 
         public void GenerateMines(GameField gameField)
@@ -194,6 +210,22 @@ namespace Minesweeper.ViewModels
                 ShowField(field);
             }
             return true;
+        }
+
+        public void RevealAllMines(GameField gameField)
+        {
+            var listOfMines = GameFields.Where(x => x.IsMine).ToList();
+            foreach (var mine in listOfMines)
+            {
+                ShowField(mine);
+            }
+        }
+
+        public void SetUpTheFlag(GameField gameField)
+        {
+            var img = new Image();
+            img.Source = new BitmapImage(new Uri("Resources/flag.png", UriKind.Relative));
+            gameField.Button.Content = img;
         }
     }
 }

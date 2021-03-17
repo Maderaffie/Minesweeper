@@ -3,17 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Minesweeper.Commands
 {
-    public class GameButtonCommand : ICommand
+    public class GameButtonRightClickCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
         public MainViewModel MainViewModel { get; set; }
- 
-        public GameButtonCommand(MainViewModel mainViewModel)
+
+        public GameButtonRightClickCommand(MainViewModel mainViewModel)
         {
             MainViewModel = mainViewModel;
         }
@@ -25,7 +24,7 @@ namespace Minesweeper.Commands
 
         public void Execute(object sender)
         {
-            MainViewModel.HandleGameFieldClick(MainViewModel.GameFields.SingleOrDefault(x => x.Name == sender as string));
+            MainViewModel.SetUpTheFlag(MainViewModel.GameFields.SingleOrDefault(x => x.Name == sender as string));
         }
     }
-}   
+}
