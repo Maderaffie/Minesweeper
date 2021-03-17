@@ -13,6 +13,7 @@ namespace Minesweeper.Models
         public string Name { get; set; }
         public bool IsMine { get; set; }
         public int NumberOfMinesAround { get; set; }
+        public bool IsClickable { get; set; }
         
         public GameField(Button button, int row, int column)
         {
@@ -21,6 +22,7 @@ namespace Minesweeper.Models
             Column = column;
             Name = "r" + Row.ToString() + "c" + Column.ToString();
             IsMine = false;
+            IsClickable = true;
         }
     }
 }

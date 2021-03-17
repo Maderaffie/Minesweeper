@@ -188,6 +188,10 @@ namespace Minesweeper.ViewModels
 
         public bool ShowField(GameField gameField)
         {
+            if (!gameField.IsClickable)
+            {
+                return true;
+            }
             var img = new Image();
             gameField.Button.IsEnabled = false;
             if (gameField.IsMine)
@@ -223,9 +227,19 @@ namespace Minesweeper.ViewModels
 
         public void SetUpTheFlag(GameField gameField)
         {
-            var img = new Image();
-            img.Source = new BitmapImage(new Uri("Resources/flag.png", UriKind.Relative));
-            gameField.Button.Content = img;
+            if (gameField.IsClickable)
+            {
+                var img = new Image();
+                img.Source = new BitmapImage(new Uri("Resources/flag.png", UriKind.Relative));
+                gameField.Button.Content = img;
+                gameField.IsClickable = false;
+            }
+            else
+            {
+                gameField.Button.Content = null;
+                gameField.IsClickable = true;
+            }
+            
         }
     }
 }
