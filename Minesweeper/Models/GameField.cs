@@ -20,6 +20,7 @@ namespace Minesweeper.Models
             Row = row;
             Column = column;
             Name = "r" + Row.ToString() + "c" + Column.ToString();
+            IsMine = false;
         }
     }
 }

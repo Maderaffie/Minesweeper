@@ -29,4 +29,4 @@ namespace Minesweeper.Commands
             MainViewModel.HandleGameFieldClick(MainViewModel.GameFields.SingleOrDefault(x => x.Name == sender as string));
         }
     }
-}
+}   

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,26 +23,30 @@ namespace Minesweeper.ViewModels
         public double BoardGridHeight { get; set; }
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
+        public int NumberOfMines { get; set; }
         public List<GameField> GameFields { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private bool gameStarted;
+
         public MainViewModel()
         {
-            NumberOfColumns = 5;
-            NumberOfRows = 5;
+            NumberOfColumns = 9;
+            NumberOfRows = 9;
+            NumberOfMines = 10;
             GameFields = new List<GameField>();
             Grid sampleGrid = new Grid();
             sampleGrid.ShowGridLines = true;
             GameButtonCommand = new GameButtonCommand(this);
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 9; i++)
             {
                 sampleGrid.ColumnDefinitions.Add(new ColumnDefinition());
                 sampleGrid.RowDefinitions.Add(new RowDefinition());
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 9; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < 9; j++)
                 {
                     Button button = new Button();
                     GameFields.Add(new GameField(button, i, j));
@@ -55,12 +60,12 @@ namespace Minesweeper.ViewModels
             }
             BoardGrid = new ObservableCollection<Grid>() { sampleGrid };
             AddBoardGridCommand = new BaseCommand(CreateNewGameBoard);
-
+            gameStarted = false;
         }
 
         public void SetBoardGridSize()
         {
-            if (WindowHeight/NumberOfRows < WindowWidth/NumberOfColumns)
+            if (WindowHeight / NumberOfRows < WindowWidth / NumberOfColumns)
             {
                 double cellSize = (WindowHeight - 30) / NumberOfRows;
                 BoardGridHeight = cellSize * NumberOfRows;
@@ -90,8 +95,10 @@ namespace Minesweeper.ViewModels
         {
             Grid grid = new Grid();
             grid.ShowGridLines = true;
-            NumberOfRows = new Random().Next(2, 15);
-            NumberOfColumns = new Random().Next(2, 15);
+            NumberOfRows = new Random().Next(5, 15);
+            NumberOfColumns = new Random().Next(5, 15);
+            NumberOfMines = new Random().Next(10, (NumberOfRows - 1) * (NumberOfColumns - 1));
+            GameFields = new List<GameField>();
             SetBoardGridSize();
             for (int i = 0; i < NumberOfRows; i++)
             {
@@ -106,17 +113,72 @@ namespace Minesweeper.ViewModels
                 for (int j = 0; j < NumberOfColumns; j++)
                 {
                     Button button = new Button();
+                    GameFields.Add(new GameField(button, i, j));
+                    button.Name = "r" + i + "c" + j;
+                    button.Command = GameButtonCommand;
+                    button.CommandParameter = button.Name;
                     Grid.SetColumn(button, j);
                     Grid.SetRow(button, i);
                     grid.Children.Add(button);
                 }
             }
+            gameStarted = false;
             BoardGrid[0] = grid;
         }
 
         public void HandleGameFieldClick(GameField gameField)
         {
-            Debug.WriteLine("I got " + gameField.Name);
+            if (gameStarted == false)
+            {
+                gameStarted = true;
+                GenerateMines(gameField);
+            }
         }
+
+        public void GenerateMines(GameField gameField)
+        {
+            int minesPlaced = 0;
+            var fieldsAroundClickedField = GetFieldsAround(gameField);
+            List<GameField> fieldsWithoutMine = GameFields.Where(x => !fieldsAroundClickedField.Contains(x) &&
+                                                                 x != gameField).ToList();
+
+            while (minesPlaced < NumberOfMines)
+            {
+                GameField randomField = fieldsWithoutMine[new Random().Next(fieldsWithoutMine.Count)];
+                randomField.IsMine = true;
+                minesPlaced++;
+
+                List<GameField> fieldsAround = GetFieldsAround(randomField);
+                foreach (var fieldAround in fieldsAround)
+                {
+                    fieldAround.NumberOfMinesAround++;
+                }
+                fieldsWithoutMine.Remove(randomField);
+            }
+
+            foreach (var field in GameFields)
+            {
+                if (field.IsMine)
+                {
+                    field.Button.Content = "MINE";
+                }
+                else
+                {
+                    field.Button.Content = field.NumberOfMinesAround;
+                }
+            }
+        }
+
+        public List<GameField> GetFieldsAround(GameField gameField)
+        {
+            var list = GameFields.Where(x => x.Column >= gameField.Column - 1 &&
+                                             x.Column <= gameField.Column + 1 &&
+                                             x.Row >= gameField.Row - 1 &&
+                                             x.Row <= gameField.Row + 1).ToList();
+            list.Remove(gameField);
+            return list;
+        }
+
+        
     }
 }
