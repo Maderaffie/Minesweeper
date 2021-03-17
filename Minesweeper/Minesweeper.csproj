@@ -17,6 +17,7 @@
     <None Remove="Resources\8.png" />
     <None Remove="Resources\flag.png" />
     <None Remove="Resources\mine.png" />
+    <None Remove="Resources\mine_win.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <Content Include="Resources\8.png" />
     <Content Include="Resources\flag.png" />
     <Content Include="Resources\mine.png" />
+    <Content Include="Resources\mine_win.png" />
   </ItemGroup>
 
   <ItemGroup>

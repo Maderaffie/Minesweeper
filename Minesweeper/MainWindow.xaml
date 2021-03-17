@@ -32,12 +32,24 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <Label HorizontalAlignment="Center">
-                Mines left:
-            </Label>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
+            <Viewbox>
+                <Label HorizontalAlignment="Center">
+                    Mines left:
+                </Label>
+            </Viewbox>
             <Border Style="{StaticResource BorderStyle}" HorizontalAlignment="Center">
-                <Label Content="{Binding MinesLeft}" HorizontalAlignment="Center"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="/Minesweeper;component/Resources/mine.png"/>
+                    <Viewbox Grid.Column="1">
+                        <Label Content="{Binding MinesLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Viewbox>
+                </Grid>
             </Border>
         </StackPanel>
     </Grid>

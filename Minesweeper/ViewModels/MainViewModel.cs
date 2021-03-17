@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Minesweeper.ViewModels
 {
@@ -30,13 +31,18 @@ namespace Minesweeper.ViewModels
         public int NumberOfMines { get; set; }
         public int MinesLeft { get; set; }
         public List<GameField> GameFields { get; set; }
+        //public string Time { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        //private DispatcherTimer DispatcherTimer { get; set; }
+        //private DateTime DateTime { get; set; }
         private bool gameStarted;
 
         public MainViewModel()
         {
+            //DispatcherTimer.Tick += dispatcherTimer_Tick;
+            //DispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+
             NumberOfColumns = 9;
             NumberOfRows = 9;
             NumberOfMines = 10;
@@ -159,6 +165,8 @@ namespace Minesweeper.ViewModels
             {
                 gameStarted = true;
                 GenerateMines(gameField);
+                //DateTime = new DateTime()
+                //DispatcherTimer.Start();
             }
             if(ShowField(gameField) == false)
             {
@@ -200,15 +208,21 @@ namespace Minesweeper.ViewModels
 
         public bool ShowField(GameField gameField)
         {
-            if (!gameField.IsClickable)
+            if (!gameField.IsClickable && gameStarted)
             {
                 return true;
             }
             var img = new Image();
             gameField.Button.IsEnabled = false;
-            if (gameField.IsMine)
+            if (gameField.IsMine && gameField.IsClickable)
             {
                 img.Source = new BitmapImage(new Uri("Resources/mine.png", UriKind.Relative));
+                gameField.Button.Content = img;
+                return false;
+            }
+            else if (gameField.IsMine && !gameField.IsClickable)
+            {
+                img.Source = new BitmapImage(new Uri("Resources/mine_win.png", UriKind.Relative));
                 gameField.Button.Content = img;
                 return false;
             }
@@ -230,6 +244,7 @@ namespace Minesweeper.ViewModels
 
         public void RevealAllMines(GameField gameField)
         {
+            gameStarted = false;
             var listOfMines = GameFields.Where(x => x.IsMine).ToList();
             foreach (var mine in listOfMines)
             {
@@ -256,5 +271,14 @@ namespace Minesweeper.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
             }
         }
+
+        
+
+
+        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            // code goes here
+        }
+
     }
 }
