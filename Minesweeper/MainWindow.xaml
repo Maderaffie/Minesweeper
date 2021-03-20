@@ -6,7 +6,7 @@
         xmlns:resources="clr-namespace:Minesweeper.Resources"
         xmlns:local="clr-namespace:Minesweeper"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" WindowStyle="None" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="BorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="Black" />
@@ -46,9 +46,11 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <Image Source="/Minesweeper;component/Resources/mine.png"/>
+                    <Viewbox>
+                        <resources:PurpleMine/>
+                    </Viewbox>
                     <Viewbox Grid.Column="1">
-                        <Label Content="{Binding MinesLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Content="{Binding FlagsLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Viewbox>
                 </Grid>
             </Border>
@@ -64,7 +66,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-
+                    
                     <Viewbox>
                         <resources:Time/>
                     </Viewbox>

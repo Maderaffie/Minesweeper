@@ -21,24 +21,39 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\1.png" />
-    <Content Include="Resources\2.png" />
-    <Content Include="Resources\3.png" />
-    <Content Include="Resources\4.png" />
-    <Content Include="Resources\5.png" />
-    <Content Include="Resources\7.png" />
-    <Content Include="Resources\8.png" />
-    <Content Include="Resources\flag.png" />
-    <Content Include="Resources\mine.png" />
-    <Content Include="Resources\mine_win.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\6.png" />
+    <Page Update="Resources\1.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\2.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\3.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\4.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\5.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\6.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\7.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\8.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\flag.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\mine.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\mine_win.xaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
   </ItemGroup>
 
 </Project>

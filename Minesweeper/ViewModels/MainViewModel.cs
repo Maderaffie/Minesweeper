@@ -5,14 +5,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Xml;
 
 namespace Minesweeper.ViewModels
 {
@@ -29,7 +32,7 @@ namespace Minesweeper.ViewModels
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
         public int NumberOfMines { get; set; }
-        public int MinesLeft { get; set; }
+        public int FlagsLeft { get; set; }
         public List<GameField> GameFields { get; set; }
         public string Time { get; set; }
 
@@ -48,7 +51,7 @@ namespace Minesweeper.ViewModels
             NumberOfColumns = 9;
             NumberOfRows = 9;
             NumberOfMines = 10;
-            MinesLeft = NumberOfMines;
+            FlagsLeft = NumberOfMines;
             GameFields = new List<GameField>();
             Grid sampleGrid = new Grid();
             sampleGrid.ShowGridLines = true;
@@ -121,7 +124,7 @@ namespace Minesweeper.ViewModels
             NumberOfRows = new Random().Next(5, 15);
             NumberOfColumns = new Random().Next(5, 15);
             NumberOfMines = new Random().Next(10, (NumberOfRows - 1) * (NumberOfColumns - 1));
-            MinesLeft = NumberOfMines;
+            FlagsLeft = NumberOfMines;
             PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
             GameFields = new List<GameField>();
             SetBoardGridSize();
@@ -170,9 +173,13 @@ namespace Minesweeper.ViewModels
                 StartTime = DateTime.Now;
                 DispatcherTimer.Start();
             }
-            if(ShowField(gameField) == false)
+            if (ShowField(gameField) == false)
             {
                 RevealAllMines(gameField);
+            }
+            else
+            {
+                CheckForGameEnd();
             }
         }
 
@@ -214,25 +221,34 @@ namespace Minesweeper.ViewModels
             {
                 return true;
             }
-            var img = new Image();
+            Viewbox viewbox = new Viewbox();
             gameField.Button.IsEnabled = false;
             if (gameField.IsMine && gameField.IsClickable)
             {
-                img.Source = new BitmapImage(new Uri("Resources/mine.png", UriKind.Relative));
-                gameField.Button.Content = img;
+                FileInfo file = new FileInfo("Resources/mine.xaml");
+                XmlReader xmlReader = XmlReader.Create(file.FullName);
+                Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
+                viewbox.Child = userControl;
+                gameField.Button.Content = viewbox;
                 return false;
             }
             else if (gameField.IsMine && !gameField.IsClickable)
             {
-                img.Source = new BitmapImage(new Uri("Resources/mine_win.png", UriKind.Relative));
-                gameField.Button.Content = img;
+                FileInfo file = new FileInfo("Resources/mine_win.xaml");
+                XmlReader xmlReader = XmlReader.Create(file.FullName);
+                Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
+                viewbox.Child = userControl;
+                gameField.Button.Content = viewbox;
                 return false;
             }
             
             if (gameField.IsMine || gameField.NumberOfMinesAround != 0)
             {
-                img.Source = new BitmapImage(new Uri("Resources/" + gameField.NumberOfMinesAround + ".png", UriKind.Relative));
-                gameField.Button.Content = img;
+                FileInfo file = new FileInfo("Resources/" + gameField.NumberOfMinesAround + ".xaml");
+                XmlReader xmlReader = XmlReader.Create(file.FullName);
+                Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
+                viewbox.Child = userControl;
+                gameField.Button.Content = viewbox;
                 return true;
             }
             var fieldsAround = GetFieldsAround(gameField);
@@ -258,19 +274,22 @@ namespace Minesweeper.ViewModels
         {
             if (gameField.IsClickable)
             {
-                var img = new Image();
-                img.Source = new BitmapImage(new Uri("Resources/flag.png", UriKind.Relative));
-                gameField.Button.Content = img;
+                Viewbox viewbox = new Viewbox();
+                FileInfo file = new FileInfo("Resources/flag.xaml");
+                XmlReader xmlReader = XmlReader.Create(file.FullName);
+                Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
+                viewbox.Child = userControl;
+                gameField.Button.Content = viewbox;
                 gameField.IsClickable = false;
-                MinesLeft--;
-                PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
+                FlagsLeft--;
+                PropertyChanged(this, new PropertyChangedEventArgs("FlagsLeft"));
             }
             else
             {
                 gameField.Button.Content = null;
                 gameField.IsClickable = true;
-                MinesLeft++;
-                PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
+                FlagsLeft++;
+                PropertyChanged(this, new PropertyChangedEventArgs("FlagsLeft"));
             }
         }
 
@@ -286,6 +305,26 @@ namespace Minesweeper.ViewModels
                 Time = time.ToString(@"hh\:mm\:ss");
             }
             PropertyChanged(this, new PropertyChangedEventArgs("Time"));
+        }
+
+        public void CheckForGameEnd()
+        {
+            if (GameFields.Where(x => x.IsMine == false && x.Button.IsEnabled == true).Any())
+            {
+                return;
+            }
+            else
+            {
+                Debug.WriteLine("ENDEND");
+            }
+        }
+
+        public void EndTheGame(bool gameWon)
+        {
+            if (gameWon)
+            {
+
+            }
         }
     }
 }
