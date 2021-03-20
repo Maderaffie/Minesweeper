@@ -31,17 +31,19 @@ namespace Minesweeper.ViewModels
         public int NumberOfMines { get; set; }
         public int MinesLeft { get; set; }
         public List<GameField> GameFields { get; set; }
-        //public string Time { get; set; }
+        public string Time { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        //private DispatcherTimer DispatcherTimer { get; set; }
-        //private DateTime DateTime { get; set; }
+        private DispatcherTimer DispatcherTimer { get; set; }
+        private DateTime StartTime { get; set; }
         private bool gameStarted;
 
         public MainViewModel()
         {
-            //DispatcherTimer.Tick += dispatcherTimer_Tick;
-            //DispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            Time = "00:00";
+            DispatcherTimer = new DispatcherTimer();
+            DispatcherTimer.Tick += DispatcherTimer_Tick;
+            DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
 
             NumberOfColumns = 9;
             NumberOfRows = 9;
@@ -165,8 +167,8 @@ namespace Minesweeper.ViewModels
             {
                 gameStarted = true;
                 GenerateMines(gameField);
-                //DateTime = new DateTime()
-                //DispatcherTimer.Start();
+                StartTime = DateTime.Now;
+                DispatcherTimer.Start();
             }
             if(ShowField(gameField) == false)
             {
@@ -272,13 +274,18 @@ namespace Minesweeper.ViewModels
             }
         }
 
-        
-
-
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            // code goes here
+            var time = (DateTime.Now - StartTime);
+            if (time < TimeSpan.FromHours(1))
+            {
+                Time = time.ToString(@"mm\:ss");
+            }
+            else
+            {
+                Time = time.ToString(@"hh\:mm\:ss");
+            }
+            PropertyChanged(this, new PropertyChangedEventArgs("Time"));
         }
-
     }
 }
