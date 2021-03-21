@@ -26,13 +26,22 @@
         </Grid.ColumnDefinitions>
 
         <Button Content="Create Grid" Command="{Binding AddBoardGridCommand}" Grid.ColumnSpan="2"/>
-        <ItemsControl ItemsSource="{Binding BoardGrid}" Grid.Row="1">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Grid Width="{Binding BoardGridWidth}" Height="{Binding BoardGridHeight}"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.03*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="0.03*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.03*"/>
+                <RowDefinition/>
+                <RowDefinition Height="0.03*"/>
+            </Grid.RowDefinitions>
+
+            <Viewbox Grid.Row="1" Grid.Column="1">
+                <ItemsControl ItemsSource="{Binding BoardGrid}"/>
+            </Viewbox>
+        </Grid>
         <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
             <Viewbox>
                 <Label HorizontalAlignment="Center">

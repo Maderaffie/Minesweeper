@@ -52,7 +52,9 @@ namespace Minesweeper.ViewModels
             FlagsLeft = NumberOfMines;
             
             Grid sampleGrid = new Grid();
-            sampleGrid.ShowGridLines = true;
+            //sampleGrid.ShowGridLines = true;
+            sampleGrid.Height = NumberOfRows*100;
+            sampleGrid.Width = NumberOfColumns*100;
             GameButtonCommand = new GameButtonCommand(this);
             GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
             for (int i = 0; i < 9; i++)
@@ -101,34 +103,6 @@ namespace Minesweeper.ViewModels
             //CreateNewGameBoard();
         }
 
-        public void SetBoardGridSize()
-        {
-            if (WindowHeight / NumberOfRows < WindowWidth / NumberOfColumns)
-            {
-                double cellSize = (WindowHeight - 30) / NumberOfRows;
-                BoardGridHeight = cellSize * NumberOfRows;
-                BoardGridWidth = cellSize * NumberOfColumns;
-            }
-            else
-            {
-                double cellSize = (WindowWidth - 30) / NumberOfColumns;
-                BoardGridHeight = cellSize * NumberOfRows;
-                BoardGridWidth = cellSize * NumberOfColumns;
-            }
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs("BoardGridHeight"));
-                PropertyChanged(this, new PropertyChangedEventArgs("BoardGridWidth"));
-            }
-        }
-
-        public void OnWindowSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            WindowHeight = e.NewSize.Height - 70;
-            WindowWidth = e.NewSize.Width;
-            SetBoardGridSize();
-        }
-
         public void CreateNewGameBoard()
         {
             Grid grid = new Grid();
@@ -136,10 +110,11 @@ namespace Minesweeper.ViewModels
             NumberOfRows = new Random().Next(5, 15);
             NumberOfColumns = new Random().Next(5, 15);
             NumberOfMines = new Random().Next(10, (NumberOfRows - 1) * (NumberOfColumns - 1));
+            grid.Height = NumberOfRows * 100;
+            grid.Width = NumberOfColumns * 100;
             FlagsLeft = NumberOfMines;
             PropertyChanged(this, new PropertyChangedEventArgs("FlagsLeft"));
             GameFields = new List<GameField>();
-            SetBoardGridSize();
             for (int i = 0; i < NumberOfRows; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition());
