@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Minesweeper.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,8 @@ namespace Minesweeper.Views
         public GameWonView()
         {
             InitializeComponent();
+            var gameWonViewModel = new GameWonViewModel();
+            DataContext = gameWonViewModel;
         }
     }
 }

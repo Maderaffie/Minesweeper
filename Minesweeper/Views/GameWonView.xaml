@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minesweeper.Views"
         mc:Ignorable="d"
-        Title="GameWonView" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="GameWonView" Height="450" Width="800" WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" AllowsTransparency="True" >
+    <Window.Background>
+        <SolidColorBrush Opacity="0.9" Color="Black"/>
+    </Window.Background>
+    <StackPanel>
+        <Viewbox>
+            <Label Foreground="BlanchedAlmond">
+                Congratulations!
+            </Label>
+        </Viewbox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 150 0 0">
+            <Button x:Name="NewGameButton" Margin="10" IsDefault="True" Command="{Binding SetDialogResultTrueCommand}" CommandParameter="{x:Reference NewGameButton}">
+                <Viewbox>
+                    <Label>
+                        New Game
+                    </Label>
+                </Viewbox>
+            </Button>
+            <Button Margin="10" IsCancel="True">
+                <Viewbox>
+                    <Label>
+                        Quit
+                    </Label>
+                </Viewbox>
+            </Button>
+        </StackPanel>
+    </StackPanel>
 </Window>

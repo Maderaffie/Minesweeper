@@ -1,5 +1,6 @@
 ﻿using Minesweeper.Commands;
 using Minesweeper.Models;
+using Minesweeper.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,6 +36,7 @@ namespace Minesweeper.ViewModels
         public int FlagsLeft { get; set; }
         public List<GameField> GameFields { get; set; }
         public string Time { get; set; }
+        public Action CloseAction { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private DispatcherTimer DispatcherTimer { get; set; }
@@ -43,16 +45,12 @@ namespace Minesweeper.ViewModels
 
         public MainViewModel()
         {
-            Time = "00:00";
-            DispatcherTimer = new DispatcherTimer();
-            DispatcherTimer.Tick += DispatcherTimer_Tick;
-            DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-
+            StartNewGame();
             NumberOfColumns = 9;
             NumberOfRows = 9;
-            NumberOfMines = 10;
+            NumberOfMines = 5;
             FlagsLeft = NumberOfMines;
-            GameFields = new List<GameField>();
+            
             Grid sampleGrid = new Grid();
             sampleGrid.ShowGridLines = true;
             GameButtonCommand = new GameButtonCommand(this);
@@ -87,6 +85,20 @@ namespace Minesweeper.ViewModels
             BoardGrid = new ObservableCollection<Grid>() { sampleGrid };
             AddBoardGridCommand = new BaseCommand(CreateNewGameBoard);
             gameStarted = false;
+        }
+
+        public void StartNewGame()
+        {
+            Time = "00:00";
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("Time"));
+            }
+            DispatcherTimer = new DispatcherTimer();
+            DispatcherTimer.Tick += DispatcherTimer_Tick;
+            DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            GameFields = new List<GameField>();
+            //CreateNewGameBoard();
         }
 
         public void SetBoardGridSize()
@@ -125,7 +137,7 @@ namespace Minesweeper.ViewModels
             NumberOfColumns = new Random().Next(5, 15);
             NumberOfMines = new Random().Next(10, (NumberOfRows - 1) * (NumberOfColumns - 1));
             FlagsLeft = NumberOfMines;
-            PropertyChanged(this, new PropertyChangedEventArgs("MinesLeft"));
+            PropertyChanged(this, new PropertyChangedEventArgs("FlagsLeft"));
             GameFields = new List<GameField>();
             SetBoardGridSize();
             for (int i = 0; i < NumberOfRows; i++)
@@ -176,6 +188,7 @@ namespace Minesweeper.ViewModels
             if (ShowField(gameField) == false)
             {
                 RevealAllMines(gameField);
+                EndTheGame(false);
             }
             else
             {
@@ -315,15 +328,25 @@ namespace Minesweeper.ViewModels
             }
             else
             {
-                Debug.WriteLine("ENDEND");
+                EndTheGame(true);
             }
         }
 
         public void EndTheGame(bool gameWon)
         {
+            DispatcherTimer.Stop();
             if (gameWon)
             {
-
+                GameWonView gameWonWindow = new GameWonView();
+                if(gameWonWindow.ShowDialog() == true)
+                {
+                    StartNewGame();
+                    CreateNewGameBoard();
+                }
+                else
+                {
+                    CloseAction();
+                }
             }
         }
     }

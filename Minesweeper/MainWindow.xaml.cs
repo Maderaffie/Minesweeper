@@ -27,6 +27,10 @@ namespace Minesweeper
             var mainViewModel = new MainViewModel();
             DataContext = mainViewModel;
             SizeChanged += mainViewModel.OnWindowSizeChanged;
+            if (mainViewModel.CloseAction == null)
+            {
+                mainViewModel.CloseAction = new Action(Close);
+            }
         }
     }
 }
