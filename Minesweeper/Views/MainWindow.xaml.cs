@@ -1,9 +1,7 @@
 ﻿using Minesweeper.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -11,10 +9,9 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Minesweeper
+namespace Minesweeper.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,12 +21,9 @@ namespace Minesweeper
         public MainWindow()
         {
             InitializeComponent();
-            var mainViewModel = new MainViewModel();
-            DataContext = mainViewModel;
-            if (mainViewModel.CloseAction == null)
-            {
-                mainViewModel.CloseAction = new Action(Close);
-            }
+            var mainWindowViewModel = new MainWindowViewModel();
+            mainWindowViewModel.SelectedViewModel = new GameViewModel(mainWindowViewModel);
+            DataContext = mainWindowViewModel;
         }
     }
 }

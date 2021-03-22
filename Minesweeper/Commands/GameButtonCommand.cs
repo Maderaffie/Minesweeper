@@ -11,11 +11,11 @@ namespace Minesweeper.Commands
     public class GameButtonCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        public MainViewModel MainViewModel { get; set; }
+        public GameViewModel GameViewModel { get; set; }
  
-        public GameButtonCommand(MainViewModel mainViewModel)
+        public GameButtonCommand(GameViewModel gameViewModel)
         {
-            MainViewModel = mainViewModel;
+            GameViewModel = gameViewModel;
         }
 
         public bool CanExecute(object parameter)
@@ -25,7 +25,7 @@ namespace Minesweeper.Commands
 
         public void Execute(object sender)
         {
-            MainViewModel.HandleGameFieldClick(MainViewModel.GameFields.SingleOrDefault(x => x.Name == sender as string));
+            GameViewModel.HandleGameFieldClick(GameViewModel.GameFields.SingleOrDefault(x => x.Name == sender as string));
         }
     }
 }   

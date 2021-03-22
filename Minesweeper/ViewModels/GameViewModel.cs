@@ -5,22 +5,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 
 namespace Minesweeper.ViewModels
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class GameViewModel : BaseViewModel
     {
         public ObservableCollection<Grid> BoardGrid { get; set; }
         public BaseCommand AddBoardGridCommand { get; set; }
@@ -34,13 +30,14 @@ namespace Minesweeper.ViewModels
         public string Time { get; set; }
         public Action CloseAction { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly MainWindowViewModel _mainWindowViewModel;
         private DispatcherTimer DispatcherTimer { get; set; }
         private DateTime StartTime { get; set; }
         private bool gameStarted;
 
-        public MainViewModel()
+        public GameViewModel(MainWindowViewModel mainWindowViewModel)
         {
+            _mainWindowViewModel = mainWindowViewModel;
             GameButtonCommand = new GameButtonCommand(this);
             GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
             AddBoardGridCommand = new BaseCommand(StartNewGame);
@@ -51,7 +48,7 @@ namespace Minesweeper.ViewModels
         {
             gameStarted = false;
             Time = "00:00";
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Time"));
+            OnPropertyChanged("Time");
             DispatcherTimer = new DispatcherTimer();
             DispatcherTimer.Tick += DispatcherTimer_Tick;
             DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
@@ -74,11 +71,11 @@ namespace Minesweeper.ViewModels
             NumberOfRows = rows;
             NumberOfColumns = columns;
             NumberOfMines = mines;
-            
+
             grid.Height = NumberOfRows * 100;
             grid.Width = NumberOfColumns * 100;
             FlagsLeft = NumberOfMines;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FlagsLeft"));
+            OnPropertyChanged("FlagsLeft");
             GameFields = new List<GameField>();
             for (int i = 0; i < NumberOfRows; i++)
             {
@@ -202,7 +199,7 @@ namespace Minesweeper.ViewModels
                 gameField.Button.Content = viewbox;
                 return false;
             }
-            
+
             if (gameField.IsMine || gameField.NumberOfMinesAround != 0)
             {
                 FileInfo file = new FileInfo("Resources/" + gameField.NumberOfMinesAround + ".xaml");
@@ -243,15 +240,14 @@ namespace Minesweeper.ViewModels
                 gameField.Button.Content = viewbox;
                 gameField.IsClickable = false;
                 FlagsLeft--;
-                PropertyChanged(this, new PropertyChangedEventArgs("FlagsLeft"));
             }
             else
             {
                 gameField.Button.Content = null;
                 gameField.IsClickable = true;
                 FlagsLeft++;
-                PropertyChanged(this, new PropertyChangedEventArgs("FlagsLeft"));
             }
+            OnPropertyChanged("FlagsLeft");
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -265,7 +261,7 @@ namespace Minesweeper.ViewModels
             {
                 Time = time.ToString(@"hh\:mm\:ss");
             }
-            PropertyChanged(this, new PropertyChangedEventArgs("Time"));
+            OnPropertyChanged("Time");
         }
 
         public void CheckForGameEnd()
@@ -286,7 +282,7 @@ namespace Minesweeper.ViewModels
             if (gameWon)
             {
                 GameWonView gameWonWindow = new GameWonView();
-                if(gameWonWindow.ShowDialog() == true)
+                if (gameWonWindow.ShowDialog() == true)
                 {
                     StartNewGame();
                     CreateNewGameBoard();
