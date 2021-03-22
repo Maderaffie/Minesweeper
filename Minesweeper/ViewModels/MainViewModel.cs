@@ -26,10 +26,6 @@ namespace Minesweeper.ViewModels
         public BaseCommand AddBoardGridCommand { get; set; }
         public GameButtonCommand GameButtonCommand { get; set; }
         public GameButtonRightClickCommand GameButtonRightClickCommand { get; set; }
-        public double WindowWidth { get; set; }
-        public double WindowHeight { get; set; }
-        public double BoardGridWidth { get; set; }
-        public double BoardGridHeight { get; set; }
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
         public int NumberOfMines { get; set; }
@@ -45,75 +41,44 @@ namespace Minesweeper.ViewModels
 
         public MainViewModel()
         {
-            StartNewGame();
-            NumberOfColumns = 9;
-            NumberOfRows = 9;
-            NumberOfMines = 5;
-            FlagsLeft = NumberOfMines;
-            
-            Grid sampleGrid = new Grid();
-            //sampleGrid.ShowGridLines = true;
-            sampleGrid.Height = NumberOfRows*100;
-            sampleGrid.Width = NumberOfColumns*100;
             GameButtonCommand = new GameButtonCommand(this);
             GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
-            for (int i = 0; i < 9; i++)
-            {
-                sampleGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                sampleGrid.RowDefinitions.Add(new RowDefinition());
-            }
-            for (int i = 0; i < 9; i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    Button button = new Button();
-                    GameFields.Add(new GameField(button, i, j));
-                    button.Name = "r" + i + "c" + j;
-                    button.Command = GameButtonCommand;
-                    button.CommandParameter = button.Name;
-                    MouseGesture mouseGesture = new MouseGesture();
-                    mouseGesture.MouseAction = MouseAction.RightClick;
-                    MouseBinding mouseBinding = new MouseBinding();
-                    mouseBinding.Gesture = mouseGesture;
-                    mouseBinding.Command = GameButtonRightClickCommand;
-                    mouseBinding.CommandParameter = button.Name;
-
-                    button.InputBindings.Add(mouseBinding);
-                    Grid.SetColumn(button, j);
-                    Grid.SetRow(button, i);
-                    sampleGrid.Children.Add(button);
-                }
-            }
-            BoardGrid = new ObservableCollection<Grid>() { sampleGrid };
-            AddBoardGridCommand = new BaseCommand(CreateNewGameBoard);
-            gameStarted = false;
+            AddBoardGridCommand = new BaseCommand(StartNewGame);
+            StartNewGame();
         }
 
         public void StartNewGame()
         {
+            gameStarted = false;
             Time = "00:00";
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs("Time"));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Time"));
             DispatcherTimer = new DispatcherTimer();
             DispatcherTimer.Tick += DispatcherTimer_Tick;
             DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             GameFields = new List<GameField>();
-            //CreateNewGameBoard();
+            CreateNewGameBoard();
         }
 
         public void CreateNewGameBoard()
         {
+            int rows = new Random().Next(5, 15);
+            int columns = new Random().Next(5, 15);
+            int mines = new Random().Next(10, (rows - 1) * (columns - 1));
+            CreateNewGameBoard(rows, columns, mines);
+        }
+
+        public void CreateNewGameBoard(int rows, int columns, int mines)
+        {
             Grid grid = new Grid();
             grid.ShowGridLines = true;
-            NumberOfRows = new Random().Next(5, 15);
-            NumberOfColumns = new Random().Next(5, 15);
-            NumberOfMines = new Random().Next(10, (NumberOfRows - 1) * (NumberOfColumns - 1));
+            NumberOfRows = rows;
+            NumberOfColumns = columns;
+            NumberOfMines = mines;
+            
             grid.Height = NumberOfRows * 100;
             grid.Width = NumberOfColumns * 100;
             FlagsLeft = NumberOfMines;
-            PropertyChanged(this, new PropertyChangedEventArgs("FlagsLeft"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FlagsLeft"));
             GameFields = new List<GameField>();
             for (int i = 0; i < NumberOfRows; i++)
             {
@@ -148,7 +113,15 @@ namespace Minesweeper.ViewModels
                 }
             }
             gameStarted = false;
-            BoardGrid[0] = grid;
+            if (BoardGrid == null)
+            {
+                BoardGrid = new ObservableCollection<Grid>();
+                BoardGrid.Add(grid);
+            }
+            else
+            {
+                BoardGrid[0] = grid;
+            }
         }
 
         public void HandleGameFieldClick(GameField gameField)
