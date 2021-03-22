@@ -1,5 +1,4 @@
-﻿using Minesweeper.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -9,21 +8,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Minesweeper.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MenuView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MenuView : UserControl
     {
-        public MainWindow()
+        public MenuView()
         {
             InitializeComponent();
-            var mainWindowViewModel = new MainWindowViewModel();
-            mainWindowViewModel.SelectedViewModel = new MenuViewModel(mainWindowViewModel);
-            DataContext = mainWindowViewModel;
         }
     }
 }

@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Fonts\Quicksand-Bold.ttf" />
+    <None Remove="Fonts\Quicksand-Light.ttf" />
+    <None Remove="Fonts\Quicksand-Medium.ttf" />
+    <None Remove="Fonts\Quicksand-Regular.ttf" />
+    <None Remove="Fonts\Quicksand-SemiBold.ttf" />
     <None Remove="Resources\1.png" />
     <None Remove="Resources\2.png" />
     <None Remove="Resources\3.png" />
@@ -54,6 +59,24 @@
     <Page Update="Resources\mine_win.xaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Fonts\Quicksand-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Quicksand-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Quicksand-Medium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Quicksand-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\Quicksand-SemiBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
