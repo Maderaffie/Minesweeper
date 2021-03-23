@@ -7,6 +7,7 @@ namespace Minesweeper.ViewModels
 {
     public class GameWonViewModel
     {
+        public string Time { get; set; }
         public SetDialogResultTrueCommand SetDialogResultTrueCommand { get; set; }
         public GameWonViewModel()
         {

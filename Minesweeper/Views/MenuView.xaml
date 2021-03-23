@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:resources="clr-namespace:Minesweeper.Resources"
              xmlns:local="clr-namespace:Minesweeper.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -34,10 +35,9 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="0.8*" />
-            <ColumnDefinition Width="0.8*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <Viewbox>
+        <Viewbox VerticalAlignment="Bottom">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30"/>
@@ -68,6 +68,9 @@
                     </Button>
                 </StackPanel>
             </Grid>
+        </Viewbox>
+        <Viewbox Grid.Column="1" VerticalAlignment="Top" Margin="0 50 0 0">
+            <resources:GameTitle/>
         </Viewbox>
     </Grid>
 </UserControl>

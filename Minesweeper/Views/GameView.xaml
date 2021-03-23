@@ -6,7 +6,7 @@
              xmlns:resources="clr-namespace:Minesweeper.Resources"
              xmlns:local="clr-namespace:Minesweeper.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" FontFamily="Quicksand">
     <UserControl.Resources>
         <Style x:Key="BorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="Black" />

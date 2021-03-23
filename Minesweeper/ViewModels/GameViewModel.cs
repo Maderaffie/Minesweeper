@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -58,9 +59,9 @@ namespace Minesweeper.ViewModels
 
         public void CreateNewGameBoard()
         {
-            int rows = new Random().Next(5, 15);
-            int columns = new Random().Next(5, 15);
-            int mines = new Random().Next(10, (rows - 1) * (columns - 1));
+            int rows = 10; //new Random().Next(5, 15);
+            int columns = 10; // new Random().Next(5, 15);
+            int mines = 5; // new Random().Next(10, (rows - 1) * (columns - 1));
             CreateNewGameBoard(rows, columns, mines);
         }
 
@@ -282,6 +283,10 @@ namespace Minesweeper.ViewModels
             if (gameWon)
             {
                 GameWonView gameWonWindow = new GameWonView();
+                gameWonWindow.Owner = Application.Current.MainWindow;
+                var gameWonViewModel = new GameWonViewModel();
+                gameWonViewModel.Time = "Your time: " + Time;
+                gameWonWindow.DataContext = gameWonViewModel;
                 if (gameWonWindow.ShowDialog() == true)
                 {
                     StartNewGame();
@@ -289,7 +294,7 @@ namespace Minesweeper.ViewModels
                 }
                 else
                 {
-                    CloseAction();
+                    Application.Current.MainWindow.Close();
                 }
             }
         }
