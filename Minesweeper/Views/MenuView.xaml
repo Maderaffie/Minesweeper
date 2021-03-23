@@ -8,7 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style x:Key="Quicksand-Light">
-            <Setter Property="TextElement.FontFamily" Value="/Minesweeper;Component/Fonts/#Quicksand-Light"/>
+            <Setter Property="TextElement.FontFamily" Value="/Minesweeper;Component/Fonts/#Quicksand"/>
         </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent" />
@@ -34,8 +34,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="0.8*" />
+            <ColumnDefinition Width="0.8*" />
         </Grid.ColumnDefinitions>
         <Viewbox>
             <Grid>
@@ -51,17 +51,17 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="1" Grid.Column="1">
-                    <Button Margin="10">
+                    <Button Margin="10" Command="{Binding OpenGameViewCommand}">
                         <TextBlock FontFamily="Quicksand">
                             New game
                         </TextBlock>
                     </Button>
-                    <Button Margin="10">
+                    <Button Margin="10" Command="{Binding OpenSettingsViewCommand}">
                         <TextBlock FontFamily="Quicksand">
                             Settings
                         </TextBlock>
                     </Button>
-                    <Button Margin="10" FontFamily="Quicksand">
+                    <Button Margin="10" Command="{Binding OpenCreditsViewCommand}" FontFamily="Quicksand">
                         <TextBlock>
                             Credits
                         </TextBlock>
