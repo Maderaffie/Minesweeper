@@ -1,5 +1,4 @@
-﻿using Minesweeper.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -14,11 +13,11 @@ using System.Windows.Shapes;
 namespace Minesweeper.Views
 {
     /// <summary>
-    /// Interaction logic for GameWonView.xaml
+    /// Interaction logic for GameEndDialog.xaml
     /// </summary>
-    public partial class GameWonView : Window
+    public partial class GameEndDialog : Window
     {
-        public GameWonView()
+        public GameEndDialog()
         {
             InitializeComponent();
         }

@@ -280,22 +280,27 @@ namespace Minesweeper.ViewModels
         public void EndTheGame(bool gameWon)
         {
             DispatcherTimer.Stop();
+            GameEndDialog gameEndDialog = new GameEndDialog();
+            gameEndDialog.Owner = Application.Current.MainWindow;
+            GameEndViewModel gameEndViewModel = new GameEndViewModel();
             if (gameWon)
             {
-                GameWonView gameWonWindow = new GameWonView();
-                gameWonWindow.Owner = Application.Current.MainWindow;
-                var gameWonViewModel = new GameWonViewModel();
-                gameWonViewModel.Time = "Your time: " + Time;
-                gameWonWindow.DataContext = gameWonViewModel;
-                if (gameWonWindow.ShowDialog() == true)
-                {
-                    StartNewGame();
-                    CreateNewGameBoard();
-                }
-                else
-                {
-                    Application.Current.MainWindow.Close();
-                }
+                gameEndViewModel.Title = "Congratulations!";
+            }
+            else
+            {
+                gameEndViewModel.Title = "Better luck next time!";
+            }
+            gameEndViewModel.Time = "Your time: " + Time;
+            gameEndDialog.DataContext = gameEndViewModel;
+            if (gameEndDialog.ShowDialog() == true)
+            {
+                StartNewGame();
+                CreateNewGameBoard();
+            }
+            else
+            {
+                Application.Current.MainWindow.Close();
             }
         }
     }

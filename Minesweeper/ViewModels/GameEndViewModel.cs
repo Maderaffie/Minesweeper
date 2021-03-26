@@ -5,11 +5,12 @@ using System.Text;
 
 namespace Minesweeper.ViewModels
 {
-    public class GameWonViewModel
+    public class GameEndViewModel
     {
+        public string Title { get; set; }
         public string Time { get; set; }
         public SetDialogResultTrueCommand SetDialogResultTrueCommand { get; set; }
-        public GameWonViewModel()
+        public GameEndViewModel()
         {
             SetDialogResultTrueCommand = new SetDialogResultTrueCommand();
         }
