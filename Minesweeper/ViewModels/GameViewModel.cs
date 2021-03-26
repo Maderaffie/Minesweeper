@@ -36,9 +36,12 @@ namespace Minesweeper.ViewModels
         private DateTime StartTime { get; set; }
         private bool gameStarted;
 
-        public GameViewModel(MainWindowViewModel mainWindowViewModel)
+        public GameViewModel(MainWindowViewModel mainWindowViewModel, int rows, int columns, int mines)
         {
             _mainWindowViewModel = mainWindowViewModel;
+            NumberOfRows = rows;
+            NumberOfColumns = columns;
+            NumberOfMines = mines;
             GameButtonCommand = new GameButtonCommand(this);
             GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
             AddBoardGridCommand = new BaseCommand(StartNewGame);
@@ -59,10 +62,7 @@ namespace Minesweeper.ViewModels
 
         public void CreateNewGameBoard()
         {
-            int rows = 10; //new Random().Next(5, 15);
-            int columns = 10; // new Random().Next(5, 15);
-            int mines = 5; // new Random().Next(10, (rows - 1) * (columns - 1));
-            CreateNewGameBoard(rows, columns, mines);
+            CreateNewGameBoard(NumberOfRows, NumberOfColumns, NumberOfMines);
         }
 
         public void CreateNewGameBoard(int rows, int columns, int mines)

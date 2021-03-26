@@ -88,7 +88,14 @@
                     </Viewbox>
                 </Grid>
             </Border>
-            <Button Content="New game" Command="{Binding AddBoardGridCommand}" Margin="0 50 0 0" Background="Transparent" BorderThickness="0"/>
+            <Button Command="{Binding AddBoardGridCommand}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Button Content="New game" IsEnabled="False" Margin="0 50 0 0" Background="Transparent" BorderThickness="0"/>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            
         </StackPanel>
     </Grid>
 </UserControl>

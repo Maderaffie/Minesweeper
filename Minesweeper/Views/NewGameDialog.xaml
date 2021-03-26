@@ -1,0 +1,44 @@
+﻿<Window x:Class="Minesweeper.Views.NewGameDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Minesweeper.Views"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="NewGameDialog" Height="350" Width="400" WindowStyle="None" AllowsTransparency="True">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.7*"/>
+            <RowDefinition/>
+            <RowDefinition Height="0.5*"/>
+        </Grid.RowDefinitions>
+        <Viewbox>
+            <Label Content="Choose difficulty level"></Label>
+        </Viewbox>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+            <RadioButton x:Name="Beginner" Content="Beginner (9x9, 10 mines)" IsChecked="True" Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Beginner}"/>
+            <RadioButton x:Name="Intermediate" Content="Intermediate (16x16, 40 mines)" Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Intermediate}"/>
+            <RadioButton x:Name="Expert" Content="Expert (16x30, 99 mines)" Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Expert}"/>
+            <RadioButton Content="Custom" x:Name="Custom" />
+            <UniformGrid Rows="1" Columns="3">
+                <StackPanel Margin="5">
+                    <Label Content="Rows"/>
+                    <xctk:IntegerUpDown Value="{Binding NumberOfRows}" Minimum="10" Maximum="24" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <Label Content="Columns"/>
+                    <xctk:IntegerUpDown Value="{Binding NumberOfColumns}" Minimum="10" Maximum="30" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <Label Content="Mines"/>
+                    <xctk:IntegerUpDown Value="{Binding NumberOfMines}" Minimum="10" Maximum="{Binding MaxNumberOfMines}" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
+                </StackPanel>
+            </UniformGrid>
+        </StackPanel>
+        <UniformGrid HorizontalAlignment="Center" Rows="1" Columns="2" Grid.Row="2" Margin="15">
+            <Button x:Name="NewGameButton" Content=" New Game " Grid.Column="0" Margin="5" Command="{Binding SetDialogResultTrueCommand}" CommandParameter="{x:Reference NewGameButton}"/>
+            <Button IsCancel="True" Content="Quit" Grid.Column="1" Margin="5"/>
+        </UniformGrid>
+    </Grid>
+</Window>
