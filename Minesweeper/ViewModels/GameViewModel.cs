@@ -187,6 +187,10 @@ namespace Minesweeper.ViewModels
                 RevealAllMines(gameField);
                 EndTheGame(false);
             }
+            else
+            {
+                CheckForGameEnd();
+            }
         }
 
         public void GenerateMines(GameField gameField)
@@ -228,9 +232,7 @@ namespace Minesweeper.ViewModels
                 return true;
             }
             Viewbox viewbox = new Viewbox();
-            //gameField.TopButton.IsEnabled = false;
             gameField.TopButton.Visibility = Visibility.Hidden;
-            BoardGrid[0].Children.Remove(gameField.TopButton);
             if (gameField.IsMine && !gameField.IsFlagged)
             {
                 FileInfo file = new FileInfo("Resources/mine.xaml");
@@ -339,6 +341,7 @@ namespace Minesweeper.ViewModels
             if (gameWon)
             {
                 gameEndViewModel.Title = "Congratulations!";
+                await Task.Delay(1000);
             }
             else
             {
