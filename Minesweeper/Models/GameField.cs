@@ -7,22 +7,24 @@ namespace Minesweeper.Models
 {
     public class GameField
     {
-        public Button Button{ get; set; }
+        public Button TopButton{ get; set; }
+        public Button BottomButton { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
         public string Name { get; set; }
         public bool IsMine { get; set; }
         public int NumberOfMinesAround { get; set; }
-        public bool IsClickable { get; set; }
+        public bool IsFlagged { get; set; }
         
-        public GameField(Button button, int row, int column)
+        public GameField(Button topButton, Button bottomButton, int row, int column)
         {
-            Button = button;
+            TopButton = topButton;
+            BottomButton = bottomButton;
             Row = row;
             Column = column;
             Name = "r" + Row.ToString() + "c" + Column.ToString();
             IsMine = false;
-            IsClickable = true;
+            IsFlagged = false;
         }
     }
 }

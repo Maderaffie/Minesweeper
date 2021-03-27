@@ -8,10 +8,13 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml;
 
@@ -23,6 +26,7 @@ namespace Minesweeper.ViewModels
         public BaseCommand AddBoardGridCommand { get; set; }
         public GameButtonCommand GameButtonCommand { get; set; }
         public GameButtonRightClickCommand GameButtonRightClickCommand { get; set; }
+        public GameButtonLeftDoubleClickCommand GameButtonLeftDoubleClickCommand { get; set; }
         public int NumberOfRows { get; set; }
         public int NumberOfColumns { get; set; }
         public int NumberOfMines { get; set; }
@@ -44,6 +48,8 @@ namespace Minesweeper.ViewModels
             NumberOfMines = mines;
             GameButtonCommand = new GameButtonCommand(this);
             GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
+            GameButtonLeftDoubleClickCommand = new GameButtonLeftDoubleClickCommand(this);
+
             AddBoardGridCommand = new BaseCommand(StartNewGame);
             StartNewGame();
         }
@@ -90,24 +96,42 @@ namespace Minesweeper.ViewModels
             {
                 for (int j = 0; j < NumberOfColumns; j++)
                 {
-                    Button button = new Button();
-                    GameFields.Add(new GameField(button, i, j));
-                    button.Name = "r" + i + "c" + j;
-                    button.Command = GameButtonCommand;
-                    button.CommandParameter = button.Name;
+                    Button bottomButton = new Button();
+                    bottomButton.Background = Brushes.Transparent;
+                    bottomButton.Name = "r" + i + "c" + j;
 
                     MouseGesture mouseGesture = new MouseGesture();
-                    mouseGesture.MouseAction = MouseAction.RightClick;
+                    mouseGesture.MouseAction = MouseAction.LeftDoubleClick;
                     MouseBinding mouseBinding = new MouseBinding();
                     mouseBinding.Gesture = mouseGesture;
+                    mouseBinding.Command = GameButtonLeftDoubleClickCommand;
+                    mouseBinding.CommandParameter = bottomButton.Name;
+                    bottomButton.Style = Application.Current.MainWindow.Resources["ButtonNoHover"] as Style;
+
+                    bottomButton.InputBindings.Add(mouseBinding);
+
+                    Button topButton = new Button();
+                    GameFields.Add(new GameField(topButton, bottomButton, i, j));
+                    topButton.Name = bottomButton.Name;
+                    topButton.Command = GameButtonCommand;
+                    topButton.CommandParameter = topButton.Name;
+
+                    mouseGesture = new MouseGesture();
+                    mouseGesture.MouseAction = MouseAction.RightClick;
+                    mouseBinding = new MouseBinding();
+                    mouseBinding.Gesture = mouseGesture;
                     mouseBinding.Command = GameButtonRightClickCommand;
-                    mouseBinding.CommandParameter = button.Name;
+                    mouseBinding.CommandParameter = topButton.Name;
 
-                    button.InputBindings.Add(mouseBinding);
+                    topButton.InputBindings.Add(mouseBinding);
 
-                    Grid.SetColumn(button, j);
-                    Grid.SetRow(button, i);
-                    grid.Children.Add(button);
+                    Grid.SetColumn(bottomButton, j);
+                    Grid.SetRow(bottomButton, i);
+                    grid.Children.Add(bottomButton);
+
+                    Grid.SetColumn(topButton, j);
+                    Grid.SetRow(topButton, i);
+                    grid.Children.Add(topButton);
                 }
             }
             gameStarted = false;
@@ -139,6 +163,29 @@ namespace Minesweeper.ViewModels
             else
             {
                 CheckForGameEnd();
+            }
+        }
+
+        public void HandleDoubleClick(GameField gameField)
+        {
+            bool noMinesRevealed = true;
+            var fieldsAround = GetFieldsAround(gameField);
+            if (!(fieldsAround.Where(x => x.IsFlagged == true).ToList().Count == gameField.NumberOfMinesAround))
+            {
+                return;
+            }
+            fieldsAround = fieldsAround.Where(x => x.TopButton.IsVisible == true && x.IsFlagged == false).ToList();
+            foreach (var field in fieldsAround)
+            {
+                if (ShowField(field) == false)
+                {
+                    noMinesRevealed = false;
+                }
+            }
+            if (!noMinesRevealed)
+            {
+                RevealAllMines(gameField);
+                EndTheGame(false);
             }
         }
 
@@ -176,28 +223,30 @@ namespace Minesweeper.ViewModels
 
         public bool ShowField(GameField gameField)
         {
-            if (!gameField.IsClickable && gameStarted)
+            if (gameField.IsFlagged && gameStarted)
             {
                 return true;
             }
             Viewbox viewbox = new Viewbox();
-            gameField.Button.IsEnabled = false;
-            if (gameField.IsMine && gameField.IsClickable)
+            //gameField.TopButton.IsEnabled = false;
+            gameField.TopButton.Visibility = Visibility.Hidden;
+            BoardGrid[0].Children.Remove(gameField.TopButton);
+            if (gameField.IsMine && !gameField.IsFlagged)
             {
                 FileInfo file = new FileInfo("Resources/mine.xaml");
                 XmlReader xmlReader = XmlReader.Create(file.FullName);
                 Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
                 viewbox.Child = userControl;
-                gameField.Button.Content = viewbox;
+                gameField.BottomButton.Content = viewbox;
                 return false;
             }
-            else if (gameField.IsMine && !gameField.IsClickable)
+            else if (gameField.IsMine && gameField.IsFlagged)
             {
                 FileInfo file = new FileInfo("Resources/mine_win.xaml");
                 XmlReader xmlReader = XmlReader.Create(file.FullName);
                 Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
                 viewbox.Child = userControl;
-                gameField.Button.Content = viewbox;
+                gameField.BottomButton.Content = viewbox;
                 return false;
             }
 
@@ -207,11 +256,11 @@ namespace Minesweeper.ViewModels
                 XmlReader xmlReader = XmlReader.Create(file.FullName);
                 Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
                 viewbox.Child = userControl;
-                gameField.Button.Content = viewbox;
+                gameField.BottomButton.Content = viewbox;
                 return true;
             }
             var fieldsAround = GetFieldsAround(gameField);
-            fieldsAround = fieldsAround.Where(x => x.Button.IsEnabled == true).ToList();
+            fieldsAround = fieldsAround.Where(x => x.TopButton.IsVisible == true).ToList();
             foreach (var field in fieldsAround)
             {
                 ShowField(field);
@@ -231,21 +280,25 @@ namespace Minesweeper.ViewModels
 
         public void SetUpTheFlag(GameField gameField)
         {
-            if (gameField.IsClickable)
+            if (!gameStarted)
+            {
+                return;
+            }
+            if (!gameField.IsFlagged)
             {
                 Viewbox viewbox = new Viewbox();
                 FileInfo file = new FileInfo("Resources/flag.xaml");
                 XmlReader xmlReader = XmlReader.Create(file.FullName);
                 Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
                 viewbox.Child = userControl;
-                gameField.Button.Content = viewbox;
-                gameField.IsClickable = false;
+                gameField.TopButton.Content = viewbox;
+                gameField.IsFlagged = true;
                 FlagsLeft--;
             }
             else
             {
-                gameField.Button.Content = null;
-                gameField.IsClickable = true;
+                gameField.TopButton.Content = null;
+                gameField.IsFlagged = false;
                 FlagsLeft++;
             }
             OnPropertyChanged("FlagsLeft");
@@ -267,7 +320,7 @@ namespace Minesweeper.ViewModels
 
         public void CheckForGameEnd()
         {
-            if (GameFields.Where(x => x.IsMine == false && x.Button.IsEnabled == true).Any())
+            if (GameFields.Where(x => x.IsMine == false && x.TopButton.IsVisible == true).Any())
             {
                 return;
             }
@@ -277,7 +330,7 @@ namespace Minesweeper.ViewModels
             }
         }
 
-        public void EndTheGame(bool gameWon)
+        public async void EndTheGame(bool gameWon)
         {
             DispatcherTimer.Stop();
             GameEndDialog gameEndDialog = new GameEndDialog();
@@ -290,6 +343,7 @@ namespace Minesweeper.ViewModels
             else
             {
                 gameEndViewModel.Title = "Better luck next time!";
+                await Task.Delay(2000);
             }
             gameEndViewModel.Time = "Your time: " + Time;
             gameEndDialog.DataContext = gameEndViewModel;
