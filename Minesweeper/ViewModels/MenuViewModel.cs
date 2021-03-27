@@ -3,6 +3,7 @@ using Minesweeper.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace Minesweeper.ViewModels
 {
@@ -24,6 +25,7 @@ namespace Minesweeper.ViewModels
         {
             var newGameDialog = new NewGameDialog();
             var newGameViewModel = new NewGameViewModel();
+            newGameDialog.Owner = Application.Current.MainWindow;
             newGameDialog.DataContext = newGameViewModel;
             if (newGameDialog.ShowDialog() == true)
             {

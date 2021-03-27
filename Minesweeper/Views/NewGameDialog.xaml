@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:Minesweeper.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="NewGameDialog" Height="350" Width="400" WindowStyle="None" AllowsTransparency="True">
+        Title="NewGameDialog" Height="350" Width="400" 
+        WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterOwner">
+    <Window.Background>
+        <SolidColorBrush Opacity="0.9" Color="Black"/>
+    </Window.Background>
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.7*"/>
@@ -14,24 +18,27 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <Viewbox>
-            <Label Content="Choose difficulty level"></Label>
+            <Label Content="Choose difficulty level" Foreground="BlanchedAlmond"></Label>
         </Viewbox>
         <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <RadioButton x:Name="Beginner" Content="Beginner (9x9, 10 mines)" IsChecked="True" Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Beginner}"/>
-            <RadioButton x:Name="Intermediate" Content="Intermediate (16x16, 40 mines)" Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Intermediate}"/>
-            <RadioButton x:Name="Expert" Content="Expert (16x30, 99 mines)" Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Expert}"/>
-            <RadioButton Content="Custom" x:Name="Custom" />
+            <RadioButton x:Name="Beginner" Content="Beginner (9x9, 10 mines)" IsChecked="True" 
+                         Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Beginner}" Foreground="BlanchedAlmond"/>
+            <RadioButton x:Name="Intermediate" Content="Intermediate (16x16, 40 mines)" 
+                         Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Intermediate}" Foreground="BlanchedAlmond"/>
+            <RadioButton x:Name="Expert" Content="Expert (16x30, 99 mines)" 
+                         Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Expert}" Foreground="BlanchedAlmond"/>
+            <RadioButton Content="Custom" x:Name="Custom" Foreground="BlanchedAlmond"/>
             <UniformGrid Rows="1" Columns="3">
                 <StackPanel Margin="5">
-                    <Label Content="Rows"/>
+                    <Label Content="Rows" Foreground="BlanchedAlmond"/>
                     <xctk:IntegerUpDown Value="{Binding NumberOfRows}" Minimum="10" Maximum="24" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
                 </StackPanel>
                 <StackPanel Margin="5">
-                    <Label Content="Columns"/>
+                    <Label Content="Columns" Foreground="BlanchedAlmond"/>
                     <xctk:IntegerUpDown Value="{Binding NumberOfColumns}" Minimum="10" Maximum="30" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
                 </StackPanel>
                 <StackPanel Margin="5">
-                    <Label Content="Mines"/>
+                    <Label Content="Mines" Foreground="BlanchedAlmond"/>
                     <xctk:IntegerUpDown Value="{Binding NumberOfMines}" Minimum="10" Maximum="{Binding MaxNumberOfMines}" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
                 </StackPanel>
             </UniformGrid>
