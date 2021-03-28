@@ -1,5 +1,6 @@
 ﻿using Minesweeper.Commands;
 using Minesweeper.Models;
+using Minesweeper.Services;
 using Minesweeper.Views;
 using System;
 using System.Collections.Generic;
@@ -33,17 +34,19 @@ namespace Minesweeper.ViewModels
         public int FlagsLeft { get; set; }
         public List<GameField> GameFields { get; set; }
         public string Time { get; set; }
-        public Action CloseAction { get; set; }
 
         private readonly MainWindowViewModel _mainWindowViewModel;
-        private DispatcherTimer DispatcherTimer { get; set; }
-        private DateTime StartTime { get; set; }
+        //private DispatcherTimer DispatcherTimer { get; set; }
+        //private DateTime StartTime { get; set; }
+        private TimerService timerService;
         private bool gameStarted;
         private bool gameEnded;
 
         public GameViewModel(MainWindowViewModel mainWindowViewModel, int rows, int columns, int mines)
         {
             _mainWindowViewModel = mainWindowViewModel;
+            timerService = new TimerService();
+            timerService.DispatcherTimer.Tick += DispatcherTimer_Tick;
             NumberOfRows = rows;
             NumberOfColumns = columns;
             NumberOfMines = mines;
@@ -61,9 +64,7 @@ namespace Minesweeper.ViewModels
             gameEnded = false;
             Time = "00:00";
             OnPropertyChanged("Time");
-            DispatcherTimer = new DispatcherTimer();
-            DispatcherTimer.Tick += DispatcherTimer_Tick;
-            DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            timerService.ResetTimer();
             GameFields = new List<GameField>();
             CreateNewGameBoard();
         }
@@ -158,8 +159,7 @@ namespace Minesweeper.ViewModels
             {
                 gameStarted = true;
                 GenerateMines(gameField);
-                StartTime = DateTime.Now;
-                DispatcherTimer.Start();
+                timerService.StartTimer();
             }
             bool canPlayerContinue = ShowField(gameField);
             if (canPlayerContinue)
@@ -371,15 +371,7 @@ namespace Minesweeper.ViewModels
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            var time = (DateTime.Now - StartTime);
-            if (time < TimeSpan.FromHours(1))
-            {
-                Time = time.ToString(@"mm\:ss");
-            }
-            else
-            {
-                Time = time.ToString(@"hh\:mm\:ss");
-            }
+            Time = timerService.Tick();
             OnPropertyChanged("Time");
         }
 
@@ -397,7 +389,7 @@ namespace Minesweeper.ViewModels
 
         public async void EndTheGame(bool gameWon)
         {
-            DispatcherTimer.Stop();
+            timerService.StopTimer();
             GameEndDialog gameEndDialog = new GameEndDialog();
             gameEndDialog.Owner = Application.Current.MainWindow;
             GameEndViewModel gameEndViewModel = new GameEndViewModel();
