@@ -39,6 +39,7 @@ namespace Minesweeper.ViewModels
         private DispatcherTimer DispatcherTimer { get; set; }
         private DateTime StartTime { get; set; }
         private bool gameStarted;
+        private bool gameEnded;
 
         public GameViewModel(MainWindowViewModel mainWindowViewModel, int rows, int columns, int mines)
         {
@@ -57,6 +58,7 @@ namespace Minesweeper.ViewModels
         public void StartNewGame()
         {
             gameStarted = false;
+            gameEnded = false;
             Time = "00:00";
             OnPropertyChanged("Time");
             DispatcherTimer = new DispatcherTimer();
@@ -148,21 +150,26 @@ namespace Minesweeper.ViewModels
 
         public void HandleGameFieldClick(GameField gameField)
         {
-            if (gameStarted == false)
+            if (gameEnded)
+            {
+                return;
+            }
+            if (!gameStarted)
             {
                 gameStarted = true;
                 GenerateMines(gameField);
                 StartTime = DateTime.Now;
                 DispatcherTimer.Start();
             }
-            if (ShowField(gameField) == false)
+            bool canPlayerContinue = ShowField(gameField);
+            if (canPlayerContinue)
             {
-                RevealAllMines(gameField);
-                EndTheGame(false);
+                CheckForGameEnd();
             }
             else
             {
-                CheckForGameEnd();
+                RevealAllMines(gameField);
+                EndTheGame(false);
             }
         }
 
@@ -225,8 +232,54 @@ namespace Minesweeper.ViewModels
             return list;
         }
 
+        public void AddButtonContent(GameField gameField, string filePath)
+        {
+            Viewbox viewbox = new Viewbox();
+            gameField.TopButton.Visibility = Visibility.Hidden;
+            if (filePath == "")
+            {
+                return;
+            }
+            FileInfo file = new FileInfo(filePath);
+            XmlReader xmlReader = XmlReader.Create(file.FullName);
+            Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
+            viewbox.Child = userControl;
+            gameField.BottomButton.Content = viewbox;
+        }
+
         public bool ShowField(GameField gameField)
         {
+            if (gameField.IsFlagged)
+            {
+                return true;
+            }
+
+            if (gameField.IsMine)
+            {
+                AddButtonContent(gameField, "Resources/mine.xaml");
+                return false;
+            }
+
+            if (gameField.NumberOfMinesAround != 0)
+            {
+                AddButtonContent(gameField, "Resources/" + gameField.NumberOfMinesAround + ".xaml");
+                return true;
+            }
+            else
+            {
+                AddButtonContent(gameField, "");
+                var fieldsAround = GetFieldsAround(gameField);
+                fieldsAround = fieldsAround.Where(x => x.TopButton.IsVisible == true).ToList();
+                foreach (var field in fieldsAround)
+                {
+                    ShowField(field);
+                }
+                return true;
+            }
+
+
+
+            /*
             if (gameField.IsFlagged && gameStarted)
             {
                 return true;
@@ -251,8 +304,7 @@ namespace Minesweeper.ViewModels
                 gameField.BottomButton.Content = viewbox;
                 return false;
             }
-
-            if (gameField.IsMine || gameField.NumberOfMinesAround != 0)
+            else if (gameField.IsMine || gameField.NumberOfMinesAround != 0)
             {
                 FileInfo file = new FileInfo("Resources/" + gameField.NumberOfMinesAround + ".xaml");
                 XmlReader xmlReader = XmlReader.Create(file.FullName);
@@ -261,28 +313,39 @@ namespace Minesweeper.ViewModels
                 gameField.BottomButton.Content = viewbox;
                 return true;
             }
-            var fieldsAround = GetFieldsAround(gameField);
+            fieldsAround = GetFieldsAround(gameField);
             fieldsAround = fieldsAround.Where(x => x.TopButton.IsVisible == true).ToList();
             foreach (var field in fieldsAround)
             {
                 ShowField(field);
             }
             return true;
+            */
+
         }
 
         public void RevealAllMines(GameField gameField)
         {
-            gameStarted = false;
+            //gameStarted = false;
+            gameEnded = true;
             var listOfMines = GameFields.Where(x => x.IsMine).ToList();
+            listOfMines.Remove(gameField);
             foreach (var mine in listOfMines)
             {
-                ShowField(mine);
+                if (mine.IsFlagged)
+                {
+                    AddButtonContent(mine, "Resources/mine_win.xaml");
+                }
+                else
+                {
+                    AddButtonContent(mine, "Resources/mine.xaml");
+                }
             }
         }
 
         public void SetUpTheFlag(GameField gameField)
         {
-            if (!gameStarted)
+            if (!gameStarted || gameEnded)
             {
                 return;
             }
@@ -341,11 +404,14 @@ namespace Minesweeper.ViewModels
             if (gameWon)
             {
                 gameEndViewModel.Title = "Congratulations!";
-                await Task.Delay(1000);
             }
             else
             {
                 gameEndViewModel.Title = "Better luck next time!";
+                foreach (var field in GameFields)
+                {
+                    //field.
+                }
                 await Task.Delay(2000);
             }
             gameEndViewModel.Time = "Your time: " + Time;

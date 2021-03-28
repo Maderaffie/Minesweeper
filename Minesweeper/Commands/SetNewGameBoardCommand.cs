@@ -10,7 +10,7 @@ namespace Minesweeper.Commands
     public class SetNewGameBoardCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        private NewGameViewModel _newGameViewModel;
+        private readonly NewGameViewModel _newGameViewModel;
         public SetNewGameBoardCommand(NewGameViewModel newGameViewModel)
         {
             _newGameViewModel = newGameViewModel;
