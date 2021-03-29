@@ -25,6 +25,8 @@ namespace Minesweeper.ViewModels
     {
         public ObservableCollection<Grid> BoardGrid { get; set; }
         public BaseCommand AddBoardGridCommand { get; set; }
+        public BaseCommand PauseGameCommand { get; set; }
+        public BaseCommand RestartGameCommand { get; set; }
         public GameButtonCommand GameButtonCommand { get; set; }
         public GameButtonRightClickCommand GameButtonRightClickCommand { get; set; }
         public GameButtonLeftDoubleClickCommand GameButtonLeftDoubleClickCommand { get; set; }
@@ -48,7 +50,8 @@ namespace Minesweeper.ViewModels
             GameButtonCommand = new GameButtonCommand(this);
             GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
             GameButtonLeftDoubleClickCommand = new GameButtonLeftDoubleClickCommand(this);
-
+            PauseGameCommand = new BaseCommand(PauseTheGame);
+            RestartGameCommand = new BaseCommand(RestartTheGame);
             AddBoardGridCommand = new BaseCommand(OpenNewGameDialog);
             StartNewGame(rows, columns, mines);
         }
@@ -76,11 +79,6 @@ namespace Minesweeper.ViewModels
             timerService.ResetTimer();
             GameFields = new List<GameField>();
             CreateNewGameBoard(rows, columns, mines);
-        }
-
-        public void CreateNewGameBoard()
-        {
-            CreateNewGameBoard(NumberOfRows, NumberOfColumns, NumberOfMines);
         }
 
         public void CreateNewGameBoard(int rows, int columns, int mines)
@@ -249,6 +247,7 @@ namespace Minesweeper.ViewModels
             {
                 return;
             }
+
             FileInfo file = new FileInfo(filePath);
             XmlReader xmlReader = XmlReader.Create(file.FullName);
             Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
@@ -374,6 +373,34 @@ namespace Minesweeper.ViewModels
             {
                 Application.Current.MainWindow.Close();
             }
+        }
+
+        public void PauseTheGame()
+        {
+            if (!gameStarted || gameEnded)
+            {
+                return;
+            }
+            timerService.StopTimer();
+            PauseViewModel pauseViewModel = new PauseViewModel();
+            PauseDialog pauseDialog = new PauseDialog
+            {
+                Owner = Application.Current.MainWindow,
+                DataContext = pauseViewModel
+            };
+            if (pauseDialog.ShowDialog() == true)
+            {
+                _mainWindowViewModel.SetMenuViewModel();
+            }
+            else
+            {
+                timerService.StartTimer();
+            }
+        }
+
+        public void RestartTheGame()
+        {
+            StartNewGame(NumberOfRows, NumberOfColumns, NumberOfMines);
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Minesweeper.ViewModels
 {
@@ -19,7 +20,32 @@ namespace Minesweeper.ViewModels
             }
         }
 
-        public MainWindowViewModel() { }
+        private Color _gradientLeft;
+        public Color GradientLeft
+        {
+            get { return _gradientLeft; }
+            set
+            {
+                _gradientLeft = value;
+                OnPropertyChanged(nameof(GradientLeft));
+            }
+        }
+        private Color _gradientRight;
+        public Color GradientRight
+        {
+            get { return _gradientRight; }
+            set
+            {
+                _gradientRight = value;
+                OnPropertyChanged(nameof(GradientRight));
+            }
+        }
+
+        public MainWindowViewModel()
+        {
+            GradientLeft = (Color)ColorConverter.ConvertFromString("#4568DC");
+            GradientRight = (Color)ColorConverter.ConvertFromString("#B06AB3");
+        }
 
         public void SetGameViewModel()
         {
@@ -34,6 +60,11 @@ namespace Minesweeper.ViewModels
         public void SetSettingsViewModel()
         {
             // TODO: Create settings viewmodel 
+            SelectedViewModel = new SettingsViewModel(this);
+            /*
+            GradientLeft = (Color)ColorConverter.ConvertFromString("#2193b0");
+            GradientRight = (Color)ColorConverter.ConvertFromString("#6dd5ed");
+            */
             return;
         }
 
@@ -41,6 +72,11 @@ namespace Minesweeper.ViewModels
         {
             // TODO: Create credits viewmodel 
             return;
+        }
+
+        public void SetMenuViewModel()
+        {
+            SelectedViewModel = new MenuViewModel(this);
         }
 
         public NewGameViewModel OpenNewGameDialog()

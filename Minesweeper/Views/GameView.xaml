@@ -8,6 +8,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="Quicksand">
     <UserControl.Resources>
+        <Style x:Key="ButtonNoHover" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="BlanchedAlmond"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="BorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="BorderThickness" Value="2" />
@@ -30,7 +49,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Column="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.03*"/>
                 <ColumnDefinition/>
@@ -46,13 +65,24 @@
                 <ItemsControl ItemsSource="{Binding BoardGrid}" Background="#f4f4f4"/>
             </Viewbox>
         </Grid>
-        <StackPanel Grid.Row="1" Grid.Column="1" Margin="10">
-            <Viewbox>
-                <Label HorizontalAlignment="Center">
-                    Mines left:
-                </Label>
+        <Grid Grid.Column="1" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.25*"/>
+                <RowDefinition Height="0.25*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Viewbox Grid.Row="1">
+                <Label HorizontalAlignment="Center" Content="Mines left:"/>
             </Viewbox>
-            <Border Style="{StaticResource BorderStyle}" HorizontalAlignment="Center">
+            <Border Style="{StaticResource BorderStyle}" Grid.Row="2" ClipToBounds="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -63,17 +93,14 @@
                         <resources:PurpleMine/>
                     </Viewbox>
                     <Viewbox Grid.Column="1">
-                        <Label Content="{Binding FlagsLeft}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Label Content="{Binding FlagsLeft, FallbackValue='100'}" FontFamily="Calibri Light"/>
                     </Viewbox>
                 </Grid>
             </Border>
-            <Viewbox>
-                <Label>
-                    Time:
-                </Label>
+            <Viewbox Grid.Row="3">
+                <Label Content="Time:"/>
             </Viewbox>
-
-            <Border Style="{StaticResource BorderStyle}" HorizontalAlignment="Center">
+            <Border Style="{StaticResource BorderStyle}" Grid.Row="4" ClipToBounds="True">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -83,12 +110,32 @@
                     <Viewbox>
                         <resources:Time/>
                     </Viewbox>
-                    <Viewbox Grid.Column="1">
-                        <Label Content="{Binding Time}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Viewbox Grid.Column="1" >
+                        <Label Content="{Binding Time, FallbackValue='00:00'}" FontFamily="Calibri Light"/>
                     </Viewbox>
                 </Grid>
             </Border>
-            <Button Content="New game" Command="{Binding AddBoardGridCommand}" Margin="0 50 0 0" Background="Transparent" BorderThickness="0"/>
-        </StackPanel>
+            <Button Grid.Row="6" Margin="3" Style="{StaticResource ButtonNoHover}" Command="{Binding PauseGameCommand}">
+                <Viewbox>
+                    <TextBlock>
+                        Pause
+                    </TextBlock>
+                </Viewbox>
+            </Button>
+            <Button Grid.Row="7" Margin="3" Style="{StaticResource ButtonNoHover}" Command="{Binding RestartGameCommand}">
+                <Viewbox>
+                    <TextBlock>
+                        Restart
+                    </TextBlock>
+                </Viewbox>
+            </Button>
+            <Button Grid.Row="8" Margin="3" Style="{StaticResource ButtonNoHover}" Command="{Binding AddBoardGridCommand}">
+                <Viewbox>
+                    <TextBlock>
+                        New game
+                    </TextBlock>
+                </Viewbox>
+            </Button>
+        </Grid>
     </Grid>
 </UserControl>

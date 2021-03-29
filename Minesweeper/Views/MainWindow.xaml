@@ -26,8 +26,8 @@
     <Grid>
         <Grid.Background>
             <LinearGradientBrush>
-                <GradientStop Color="#4568DC" Offset="0"/>
-                <GradientStop Color="#B06AB3" Offset="1"/>
+                <GradientStop Color="{Binding GradientLeft, FallbackValue='#4568DC'}" Offset="0"/>
+                <GradientStop Color="{Binding GradientRight, FallbackValue='#B06AB3'}" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
         <ContentControl Content="{Binding SelectedViewModel}"/>
