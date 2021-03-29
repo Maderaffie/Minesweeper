@@ -23,25 +23,17 @@ namespace Minesweeper.ViewModels
 
         public void OpenGameView()
         {
-            var newGameDialog = new NewGameDialog();
-            var newGameViewModel = new NewGameViewModel();
-            newGameDialog.Owner = Application.Current.MainWindow;
-            newGameDialog.DataContext = newGameViewModel;
-            if (newGameDialog.ShowDialog() == true)
-            {
-                var gameViewModel = new GameViewModel(_mainWindowViewModel, newGameViewModel.NumberOfRows, newGameViewModel.NumberOfColumns, newGameViewModel.NumberOfMines);
-                _mainWindowViewModel.SelectedViewModel = gameViewModel;
-            }
+            _mainWindowViewModel.SetGameViewModel();
         }
 
         public void OpenSettingsView()
         {
-            _mainWindowViewModel.SelectedViewModel = new GameViewModel(_mainWindowViewModel, 9, 9, 10);
+            _mainWindowViewModel.SetSettingsViewModel();
         }
 
         public void OpenCreditsView()
         {
-            _mainWindowViewModel.SelectedViewModel = new GameViewModel(_mainWindowViewModel, 9, 9, 10);
+            _mainWindowViewModel.SetCreditsViewModel();
         }
     }
 }

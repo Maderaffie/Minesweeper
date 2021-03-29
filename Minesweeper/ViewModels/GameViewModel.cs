@@ -36,9 +36,7 @@ namespace Minesweeper.ViewModels
         public string Time { get; set; }
 
         private readonly MainWindowViewModel _mainWindowViewModel;
-        //private DispatcherTimer DispatcherTimer { get; set; }
-        //private DateTime StartTime { get; set; }
-        private TimerService timerService;
+        private readonly TimerService timerService;
         private bool gameStarted;
         private bool gameEnded;
 
@@ -47,18 +45,29 @@ namespace Minesweeper.ViewModels
             _mainWindowViewModel = mainWindowViewModel;
             timerService = new TimerService();
             timerService.DispatcherTimer.Tick += DispatcherTimer_Tick;
-            NumberOfRows = rows;
-            NumberOfColumns = columns;
-            NumberOfMines = mines;
             GameButtonCommand = new GameButtonCommand(this);
             GameButtonRightClickCommand = new GameButtonRightClickCommand(this);
             GameButtonLeftDoubleClickCommand = new GameButtonLeftDoubleClickCommand(this);
 
-            AddBoardGridCommand = new BaseCommand(StartNewGame);
-            StartNewGame();
+            AddBoardGridCommand = new BaseCommand(OpenNewGameDialog);
+            StartNewGame(rows, columns, mines);
         }
 
-        public void StartNewGame()
+        public void OpenNewGameDialog()
+        {
+            timerService.StopTimer();
+            var newGameViewModel = _mainWindowViewModel.OpenNewGameDialog();
+            if (newGameViewModel != null)
+            {
+                StartNewGame(newGameViewModel.NumberOfRows, newGameViewModel.NumberOfColumns, newGameViewModel.NumberOfMines);
+            }
+            else
+            {
+                timerService.StartTimer();
+            }
+        }
+
+        public void StartNewGame(int rows, int columns, int mines)
         {
             gameStarted = false;
             gameEnded = false;
@@ -66,7 +75,7 @@ namespace Minesweeper.ViewModels
             OnPropertyChanged("Time");
             timerService.ResetTimer();
             GameFields = new List<GameField>();
-            CreateNewGameBoard();
+            CreateNewGameBoard(rows, columns, mines);
         }
 
         public void CreateNewGameBoard()
@@ -276,57 +285,10 @@ namespace Minesweeper.ViewModels
                 }
                 return true;
             }
-
-
-
-            /*
-            if (gameField.IsFlagged && gameStarted)
-            {
-                return true;
-            }
-            Viewbox viewbox = new Viewbox();
-            gameField.TopButton.Visibility = Visibility.Hidden;
-            if (gameField.IsMine && !gameField.IsFlagged)
-            {
-                FileInfo file = new FileInfo("Resources/mine.xaml");
-                XmlReader xmlReader = XmlReader.Create(file.FullName);
-                Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
-                viewbox.Child = userControl;
-                gameField.BottomButton.Content = viewbox;
-                return false;
-            }
-            else if (gameField.IsMine && gameField.IsFlagged)
-            {
-                FileInfo file = new FileInfo("Resources/mine_win.xaml");
-                XmlReader xmlReader = XmlReader.Create(file.FullName);
-                Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
-                viewbox.Child = userControl;
-                gameField.BottomButton.Content = viewbox;
-                return false;
-            }
-            else if (gameField.IsMine || gameField.NumberOfMinesAround != 0)
-            {
-                FileInfo file = new FileInfo("Resources/" + gameField.NumberOfMinesAround + ".xaml");
-                XmlReader xmlReader = XmlReader.Create(file.FullName);
-                Canvas userControl = (Canvas)XamlReader.Load(xmlReader);
-                viewbox.Child = userControl;
-                gameField.BottomButton.Content = viewbox;
-                return true;
-            }
-            fieldsAround = GetFieldsAround(gameField);
-            fieldsAround = fieldsAround.Where(x => x.TopButton.IsVisible == true).ToList();
-            foreach (var field in fieldsAround)
-            {
-                ShowField(field);
-            }
-            return true;
-            */
-
         }
 
         public void RevealAllMines(GameField gameField)
         {
-            //gameStarted = false;
             gameEnded = true;
             var listOfMines = GameFields.Where(x => x.IsMine).ToList();
             listOfMines.Remove(gameField);
@@ -400,18 +362,13 @@ namespace Minesweeper.ViewModels
             else
             {
                 gameEndViewModel.Title = "Better luck next time!";
-                foreach (var field in GameFields)
-                {
-                    //field.
-                }
                 await Task.Delay(2000);
             }
             gameEndViewModel.Time = "Your time: " + Time;
             gameEndDialog.DataContext = gameEndViewModel;
             if (gameEndDialog.ShowDialog() == true)
             {
-                StartNewGame();
-                CreateNewGameBoard();
+                StartNewGame(NumberOfRows, NumberOfColumns, NumberOfMines);
             }
             else
             {
