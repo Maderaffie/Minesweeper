@@ -84,7 +84,7 @@ namespace Minesweeper.ViewModels
         public void CreateNewGameBoard(int rows, int columns, int mines)
         {
             Grid grid = new Grid();
-            grid.ShowGridLines = true;
+            //grid.ShowGridLines = true;
             NumberOfRows = rows;
             NumberOfColumns = columns;
             NumberOfMines = mines;
@@ -107,6 +107,7 @@ namespace Minesweeper.ViewModels
                 for (int j = 0; j < NumberOfColumns; j++)
                 {
                     Button bottomButton = new Button();
+                    //bottomButton.Margin = new Thickness(7.5);
                     bottomButton.Background = Brushes.Transparent;
                     bottomButton.Name = "r" + i + "c" + j;
 
@@ -123,6 +124,7 @@ namespace Minesweeper.ViewModels
                     Button topButton = new Button();
                     GameFields.Add(new GameField(topButton, bottomButton, i, j));
                     topButton.Name = bottomButton.Name;
+                    topButton.Margin = new Thickness(7.5);
                     topButton.Command = GameButtonCommand;
                     topButton.CommandParameter = topButton.Name;
 
@@ -132,6 +134,7 @@ namespace Minesweeper.ViewModels
                     mouseBinding.Gesture = mouseGesture;
                     mouseBinding.Command = GameButtonRightClickCommand;
                     mouseBinding.CommandParameter = topButton.Name;
+                    topButton.Style = Application.Current.MainWindow.Resources["RoundedButton"] as Style;
 
                     topButton.InputBindings.Add(mouseBinding);
 
@@ -242,6 +245,7 @@ namespace Minesweeper.ViewModels
         public void AddButtonContent(GameField gameField, string filePath)
         {
             Viewbox viewbox = new Viewbox();
+            viewbox.Margin = new Thickness(7.5);
             gameField.TopButton.Visibility = Visibility.Hidden;
             if (filePath == "")
             {

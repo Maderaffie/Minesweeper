@@ -62,7 +62,11 @@
             </Grid.RowDefinitions>
 
             <Viewbox Grid.Row="1" Grid.Column="1">
-                <ItemsControl ItemsSource="{Binding BoardGrid}" Background="#f4f4f4"/>
+                <ItemsControl ItemsSource="{Binding BoardGrid}">
+                    <ItemsControl.Background>
+                        <SolidColorBrush Color="White" Opacity="0.4"/>
+                    </ItemsControl.Background>
+                </ItemsControl>
             </Viewbox>
         </Grid>
         <Grid Grid.Column="1" Margin="5">
