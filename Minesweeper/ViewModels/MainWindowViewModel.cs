@@ -61,11 +61,6 @@ namespace Minesweeper.ViewModels
         {
             // TODO: Create settings viewmodel 
             SelectedViewModel = new SettingsViewModel(this);
-            /*
-            GradientLeft = (Color)ColorConverter.ConvertFromString("#2193b0");
-            GradientRight = (Color)ColorConverter.ConvertFromString("#6dd5ed");
-            */
-            return;
         }
 
         public void SetCreditsViewModel()

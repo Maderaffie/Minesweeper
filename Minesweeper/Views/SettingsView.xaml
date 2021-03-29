@@ -5,17 +5,73 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Minesweeper.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" FontFamily="Quicksand">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="AntiqueWhite" />
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"/>
             <RowDefinition Height="0.6*"/>
-            <RowDefinition/>
             <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="0.3*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
-            <RadioButton Content="Can You Feel The Love Tonight" IsChecked="True" Foreground="BlanchedAlmond"/>
-            <RadioButton Content="Cool Blues" Foreground="BlanchedAlmond"/>
-            <RadioButton Content="Witching Hour" Foreground="BlanchedAlmond"/>
-        </StackPanel>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.4*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Viewbox Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="Choose theme" Foreground="BlanchedAlmond" Margin="5"/>
+        </Viewbox>
+        <Viewbox Grid.Row="2" Grid.Column="1" Margin="30">
+            <StackPanel HorizontalAlignment="Center">
+                <RadioButton x:Name="CanYouFeelTheLoveTonight" Content="Can You Feel The Love Tonight" IsChecked="True" 
+                         Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference CanYouFeelTheLoveTonight}" Foreground="BlanchedAlmond"/>
+                <RadioButton x:Name="CoolBlues" Content="Cool Blues" Command="{Binding ChangeThemeCommand}" 
+                         CommandParameter="{x:Reference CoolBlues}" Foreground="BlanchedAlmond"/>
+                <RadioButton x:Name="WitchingHour" Content="Witching Hour" Command="{Binding ChangeThemeCommand}" 
+                         CommandParameter="{x:Reference WitchingHour}" Foreground="BlanchedAlmond"/>
+            </StackPanel>
+        </Viewbox>
+        <Grid Grid.Row="3" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="1" Grid.Row="1" Command="{Binding BackToMainMenuCommand}">
+                <Viewbox>
+                    <TextBlock Text="Back to main menu"/>
+                </Viewbox>
+            </Button>
+        </Grid>
     </Grid>
 </UserControl>
