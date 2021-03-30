@@ -8,6 +8,17 @@ namespace Minesweeper.ViewModels
 {
     public class SettingsViewModel : BaseViewModel
     {
+        private string _theme;
+        public string Theme
+        {
+            get { return _theme; }
+            set
+            {
+                _theme = value;
+                OnPropertyChanged(nameof(Theme));
+            }
+        }
+
         public ChangeThemeCommand ChangeThemeCommand { get; set; }
         public BaseCommand BackToMainMenuCommand { get; set; }
         private readonly MainWindowViewModel _mainWindowViewModel;
@@ -34,6 +45,7 @@ namespace Minesweeper.ViewModels
                 default:
                     break;
             }
+            Theme = themeName;
         }
 
         public void SetNewGradient(string leftColor, string rightColor)

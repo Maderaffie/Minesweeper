@@ -3,10 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:Minesweeper.Converters"
              xmlns:local="clr-namespace:Minesweeper.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="Quicksand">
     <UserControl.Resources>
+        <converters:GradientToBoolConverter x:Key="GradientToBoolConverter"/>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
@@ -48,12 +50,15 @@
         </Viewbox>
         <Viewbox Grid.Row="2" Grid.Column="1" Margin="30">
             <StackPanel HorizontalAlignment="Center">
-                <RadioButton x:Name="CanYouFeelTheLoveTonight" Content="Can You Feel The Love Tonight" IsChecked="True" 
-                         Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference CanYouFeelTheLoveTonight}" Foreground="BlanchedAlmond"/>
-                <RadioButton x:Name="CoolBlues" Content="Cool Blues" Command="{Binding ChangeThemeCommand}" 
-                         CommandParameter="{x:Reference CoolBlues}" Foreground="BlanchedAlmond"/>
-                <RadioButton x:Name="WitchingHour" Content="Witching Hour" Command="{Binding ChangeThemeCommand}" 
-                         CommandParameter="{x:Reference WitchingHour}" Foreground="BlanchedAlmond"/>
+                <RadioButton x:Name="CanYouFeelTheLoveTonight" Content="Can You Feel The Love Tonight" 
+                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=CanYouFeelTheLoveTonight}"
+                             Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference CanYouFeelTheLoveTonight}" Foreground="BlanchedAlmond"/>
+                <RadioButton x:Name="CoolBlues" Content="Cool Blues" 
+                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=CoolBlues}"
+                             Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference CoolBlues}" Foreground="BlanchedAlmond"/>
+                <RadioButton x:Name="WitchingHour" Content="Witching Hour" 
+                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=WitchingHour}"
+                             Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference WitchingHour}" Foreground="BlanchedAlmond"/>
             </StackPanel>
         </Viewbox>
         <Grid Grid.Row="3" Grid.Column="1">
