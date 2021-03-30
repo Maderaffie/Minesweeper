@@ -38,8 +38,9 @@ namespace Minesweeper.ViewModels
 
         public void SetNewGradient(string leftColor, string rightColor)
         {
-            _mainWindowViewModel.GradientLeft = (Color)ColorConverter.ConvertFromString(leftColor);
-            _mainWindowViewModel.GradientRight = (Color)ColorConverter.ConvertFromString(rightColor);
+            Properties.Settings.Default.LeftGradient = (Color)ColorConverter.ConvertFromString(leftColor);
+            Properties.Settings.Default.RightGradient = (Color)ColorConverter.ConvertFromString(rightColor);
+            _mainWindowViewModel.SetNewGradient();
         }
 
         public void ChangeSelectedViewModel()

@@ -43,8 +43,14 @@ namespace Minesweeper.ViewModels
 
         public MainWindowViewModel()
         {
-            GradientLeft = (Color)ColorConverter.ConvertFromString("#4568DC");
-            GradientRight = (Color)ColorConverter.ConvertFromString("#B06AB3");
+            SetNewGradient();
+        }
+
+        public void SetNewGradient()
+        {
+            GradientLeft = Properties.Settings.Default.LeftGradient;
+            GradientRight = Properties.Settings.Default.RightGradient;
+            Properties.Settings.Default.Save();
         }
 
         public void SetGameViewModel()
