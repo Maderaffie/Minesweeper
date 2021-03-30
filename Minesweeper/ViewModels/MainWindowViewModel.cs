@@ -65,14 +65,12 @@ namespace Minesweeper.ViewModels
 
         public void SetSettingsViewModel()
         {
-            // TODO: Create settings viewmodel 
             SelectedViewModel = new SettingsViewModel(this);
         }
 
         public void SetCreditsViewModel()
         {
-            // TODO: Create credits viewmodel 
-            return;
+            SelectedViewModel = new CreditsViewModel(this);
         }
 
         public void SetMenuViewModel()

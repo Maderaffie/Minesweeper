@@ -15,6 +15,9 @@
         <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
             <views:SettingsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:CreditsViewModel}">
+            <views:CreditsView/>
+        </DataTemplate>
 
 
         <Style x:Key="DialogButton" TargetType="Button">
