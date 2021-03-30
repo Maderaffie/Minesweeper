@@ -9,27 +9,6 @@
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="Quicksand">
     <UserControl.Resources>
         <converters:GradientToBoolConverter x:Key="GradientToBoolConverter"/>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Foreground" Value="AntiqueWhite" />
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -69,7 +48,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Button Grid.Column="1" Grid.Row="1" Command="{Binding BackToMainMenuCommand}">
+            <Button Grid.Column="1" Grid.Row="1" Command="{Binding BackToMainMenuCommand}" Style="{StaticResource MenuButton}">
                 <Viewbox>
                     <TextBlock Text="Back to main menu"/>
                 </Viewbox>

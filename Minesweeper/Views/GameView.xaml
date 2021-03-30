@@ -8,25 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontFamily="Quicksand">
     <UserControl.Resources>
-        <Style x:Key="ButtonNoHover" TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="BlanchedAlmond"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
         <Style x:Key="BorderStyle" TargetType="Border">
             <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="BorderThickness" Value="2" />
@@ -119,21 +100,21 @@
                     </Viewbox>
                 </Grid>
             </Border>
-            <Button Grid.Row="6" Margin="3" Style="{StaticResource ButtonNoHover}" Command="{Binding PauseGameCommand}">
+            <Button Grid.Row="6" Margin="3" Style="{StaticResource GameMenuButton}" Command="{Binding PauseGameCommand}">
                 <Viewbox>
                     <TextBlock>
                         Pause
                     </TextBlock>
                 </Viewbox>
             </Button>
-            <Button Grid.Row="7" Margin="3" Style="{StaticResource ButtonNoHover}" Command="{Binding RestartGameCommand}">
+            <Button Grid.Row="7" Margin="3" Style="{StaticResource GameMenuButton}" Command="{Binding RestartGameCommand}">
                 <Viewbox>
                     <TextBlock>
                         Restart
                     </TextBlock>
                 </Viewbox>
             </Button>
-            <Button Grid.Row="8" Margin="3" Style="{StaticResource ButtonNoHover}" Command="{Binding AddBoardGridCommand}">
+            <Button Grid.Row="8" Margin="3" Style="{StaticResource GameMenuButton}" Command="{Binding AddBoardGridCommand}">
                 <Viewbox>
                     <TextBlock>
                         New game

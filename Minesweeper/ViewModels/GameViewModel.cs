@@ -84,7 +84,6 @@ namespace Minesweeper.ViewModels
         public void CreateNewGameBoard(int rows, int columns, int mines)
         {
             Grid grid = new Grid();
-            //grid.ShowGridLines = true;
             NumberOfRows = rows;
             NumberOfColumns = columns;
             NumberOfMines = mines;
@@ -374,7 +373,7 @@ namespace Minesweeper.ViewModels
             }
             else
             {
-                Application.Current.MainWindow.Close();
+                _mainWindowViewModel.SetMenuViewModel();
             }
         }
 

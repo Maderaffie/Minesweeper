@@ -5,32 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:resources="clr-namespace:Minesweeper.Resources"
              xmlns:local="clr-namespace:Minesweeper.Views"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" FontFamily="Quicksand"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style x:Key="Quicksand-Light">
             <Setter Property="TextElement.FontFamily" Value="/Minesweeper;Component/Fonts/#Quicksand"/>
-        </Style>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Foreground" Value="AntiqueWhite" />
-
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -52,17 +31,17 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="1" Grid.Column="1">
-                    <Button Margin="10" Command="{Binding OpenGameViewCommand}">
-                        <TextBlock FontFamily="Quicksand">
+                    <Button Margin="10" Command="{Binding OpenGameViewCommand}" Style="{StaticResource MenuButton}">
+                        <TextBlock>
                             New game
                         </TextBlock>
                     </Button>
-                    <Button Margin="10" Command="{Binding OpenSettingsViewCommand}">
-                        <TextBlock FontFamily="Quicksand">
+                    <Button Margin="10" Command="{Binding OpenSettingsViewCommand}" Style="{StaticResource MenuButton}">
+                        <TextBlock>
                             Settings
                         </TextBlock>
                     </Button>
-                    <Button Margin="10" Command="{Binding OpenCreditsViewCommand}" FontFamily="Quicksand">
+                    <Button Margin="10" Command="{Binding OpenCreditsViewCommand}" Style="{StaticResource MenuButton}">
                         <TextBlock>
                             Credits
                         </TextBlock>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Minesweeper.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="NewGameDialog" Height="350" Width="400" 
+        Title="NewGameDialog" Height="325" Width="400" 
         WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterOwner">
     <Window.Background>
         <SolidColorBrush Opacity="0.9" Color="Black"/>
@@ -20,7 +20,7 @@
         <Viewbox>
             <Label Content="Choose difficulty level" Foreground="BlanchedAlmond"></Label>
         </Viewbox>
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <RadioButton x:Name="Beginner" Content="Beginner (9x9, 10 mines)" IsChecked="True" 
                          Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Beginner}" Foreground="BlanchedAlmond"/>
             <RadioButton x:Name="Intermediate" Content="Intermediate (16x16, 40 mines)" 
@@ -43,9 +43,10 @@
                 </StackPanel>
             </UniformGrid>
         </StackPanel>
-        <UniformGrid HorizontalAlignment="Center" Rows="1" Columns="2" Grid.Row="2" Margin="15">
-            <Button x:Name="NewGameButton" Content=" New Game " Grid.Column="0" Margin="5" Command="{Binding SetDialogResultTrueCommand}" CommandParameter="{x:Reference NewGameButton}"/>
-            <Button IsCancel="True" Content="Cancel" Grid.Column="1" Margin="5"/>
+        <UniformGrid HorizontalAlignment="Center" Rows="1" Columns="2" Grid.Row="2" Margin="17">
+            <Button x:Name="NewGameButton" Content=" Confirm " Grid.Column="0" Margin="5" Style="{StaticResource DialogButton}"
+                    Command="{Binding SetDialogResultTrueCommand}" CommandParameter="{x:Reference NewGameButton}"/>
+            <Button IsCancel="True" Content="Cancel" Grid.Column="1" Margin="5" Style="{StaticResource DialogButton}"/>
         </UniformGrid>
     </Grid>
 </Window>
