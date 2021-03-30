@@ -107,7 +107,6 @@ namespace Minesweeper.ViewModels
                 for (int j = 0; j < NumberOfColumns; j++)
                 {
                     Button bottomButton = new Button();
-                    //bottomButton.Margin = new Thickness(7.5);
                     bottomButton.Background = Brushes.Transparent;
                     bottomButton.Name = "r" + i + "c" + j;
 
@@ -124,7 +123,7 @@ namespace Minesweeper.ViewModels
                     Button topButton = new Button();
                     GameFields.Add(new GameField(topButton, bottomButton, i, j));
                     topButton.Name = bottomButton.Name;
-                    topButton.Margin = new Thickness(7.5);
+                    topButton.Margin = new Thickness(5);
                     topButton.Command = GameButtonCommand;
                     topButton.CommandParameter = topButton.Name;
 
@@ -245,7 +244,7 @@ namespace Minesweeper.ViewModels
         public void AddButtonContent(GameField gameField, string filePath)
         {
             Viewbox viewbox = new Viewbox();
-            viewbox.Margin = new Thickness(7.5);
+            viewbox.Margin = new Thickness(5);
             gameField.TopButton.Visibility = Visibility.Hidden;
             if (filePath == "")
             {
@@ -381,10 +380,6 @@ namespace Minesweeper.ViewModels
 
         public void PauseTheGame()
         {
-            if (!gameStarted || gameEnded)
-            {
-                return;
-            }
             timerService.StopTimer();
             PauseViewModel pauseViewModel = new PauseViewModel();
             PauseDialog pauseDialog = new PauseDialog
@@ -398,7 +393,10 @@ namespace Minesweeper.ViewModels
             }
             else
             {
-                timerService.StartTimer();
+                if (gameStarted && !gameEnded)
+                {
+                    timerService.StartTimer();
+                }
             }
         }
 

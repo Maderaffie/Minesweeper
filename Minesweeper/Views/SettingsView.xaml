@@ -50,15 +50,12 @@
         </Viewbox>
         <Viewbox Grid.Row="2" Grid.Column="1" Margin="30">
             <StackPanel HorizontalAlignment="Center">
-                <RadioButton x:Name="CanYouFeelTheLoveTonight" Content="Can You Feel The Love Tonight" 
-                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=CanYouFeelTheLoveTonight}"
-                             Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference CanYouFeelTheLoveTonight}" Foreground="BlanchedAlmond"/>
-                <RadioButton x:Name="CoolBlues" Content="Cool Blues" 
-                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=CoolBlues}"
-                             Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference CoolBlues}" Foreground="BlanchedAlmond"/>
-                <RadioButton x:Name="WitchingHour" Content="Witching Hour" 
-                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=WitchingHour}"
-                             Command="{Binding ChangeThemeCommand}" CommandParameter="{x:Reference WitchingHour}" Foreground="BlanchedAlmond"/>
+                <RadioButton x:Name="CanYouFeelTheLoveTonight" Content="Can You Feel The Love Tonight" Foreground="BlanchedAlmond"
+                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=CanYouFeelTheLoveTonight}"/>
+                <RadioButton x:Name="CoolBlues" Content="Cool Blues" Foreground="BlanchedAlmond"
+                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=CoolBlues}"/>
+                <RadioButton x:Name="WitchingHour" Content="Witching Hour" Foreground="BlanchedAlmond"
+                             IsChecked="{Binding Theme, Converter={StaticResource ResourceKey=GradientToBoolConverter}, ConverterParameter=WitchingHour}"/>
             </StackPanel>
         </Viewbox>
         <Grid Grid.Row="3" Grid.Column="1">

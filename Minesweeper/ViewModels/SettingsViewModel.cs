@@ -15,23 +15,22 @@ namespace Minesweeper.ViewModels
             set
             {
                 _theme = value;
+                ChangeTheme();
                 OnPropertyChanged(nameof(Theme));
             }
         }
 
-        public ChangeThemeCommand ChangeThemeCommand { get; set; }
         public BaseCommand BackToMainMenuCommand { get; set; }
         private readonly MainWindowViewModel _mainWindowViewModel;
         public SettingsViewModel(MainWindowViewModel mainWindowViewModel)
         {
             _mainWindowViewModel = mainWindowViewModel;
-            ChangeThemeCommand = new ChangeThemeCommand(this);
             BackToMainMenuCommand = new BaseCommand(ChangeSelectedViewModel);
         }
 
-        public void ChangeTheme(string themeName)
+        public void ChangeTheme()
         {
-            switch (themeName)
+            switch (Theme)
             {
                 case "CanYouFeelTheLoveTonight":
                     SetNewGradient("#4568DC", "#B06AB3");
@@ -45,7 +44,6 @@ namespace Minesweeper.ViewModels
                 default:
                     break;
             }
-            Theme = themeName;
         }
 
         public void SetNewGradient(string leftColor, string rightColor)
