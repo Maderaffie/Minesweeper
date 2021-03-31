@@ -14,7 +14,7 @@ namespace Minesweeper.Converters
             return (parameter as string) switch
             {
                 "CanYouFeelTheLoveTonight" => CheckForSavedGradient("#4568DC", "#B06AB3"),
-                "CoolBlues" => CheckForSavedGradient("#2193b0", "#6dd5ed"),
+                "CoolBlues" => CheckForSavedGradient("#1a758c", "#57aabd"),
                 "WitchingHour" => CheckForSavedGradient("#c31432", "#240b36"),
                 _ => false,
             };

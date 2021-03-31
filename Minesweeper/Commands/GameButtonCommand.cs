@@ -25,7 +25,7 @@ namespace Minesweeper.Commands
 
         public void Execute(object sender)
         {
-            GameViewModel.HandleGameFieldClick(GameViewModel.GameFields.SingleOrDefault(x => x.Name == sender as string));
+            GameViewModel.HandleGameFieldClick(GameViewModel.GameFields.SingleOrDefault(x => x.TopButton == sender as Button));
         }
     }
 }   

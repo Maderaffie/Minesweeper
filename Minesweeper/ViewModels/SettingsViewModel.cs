@@ -36,7 +36,7 @@ namespace Minesweeper.ViewModels
                     SetNewGradient("#4568DC", "#B06AB3");
                     break;
                 case "CoolBlues":
-                    SetNewGradient("#2193b0", "#6dd5ed");
+                    SetNewGradient("#1a758c", "#57aabd");
                     break;
                 case "WitchingHour":
                     SetNewGradient("#c31432", "#240b36");
