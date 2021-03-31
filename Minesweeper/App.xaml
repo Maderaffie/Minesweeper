@@ -19,7 +19,9 @@
             <views:CreditsView/>
         </DataTemplate>
 
-
+        <FontFamily x:Key="Quicksand-Light">./Fonts/Quicksand-Light.ttf#Quicksand</FontFamily>
+        <FontFamily x:Key="Quicksand-Medium">./Fonts/Quicksand-Medium.ttf#Quicksand</FontFamily>
+        
         <Style x:Key="DialogButton" TargetType="Button">
             <Style.Resources>
                 <Style TargetType="Border">
@@ -58,7 +60,7 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontFamily" Value="{StaticResource Quicksand-Medium}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

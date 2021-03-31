@@ -17,7 +17,7 @@
             <RowDefinition Height="0.5*"/>
         </Grid.RowDefinitions>
         <Viewbox>
-            <Label Content="Pause" Foreground="BlanchedAlmond"/>
+            <Label Content="Pause" Foreground="BlanchedAlmond" FontFamily="{StaticResource Quicksand-Light}"/>
         </Viewbox>
         <UniformGrid HorizontalAlignment="Center" Rows="1" Columns="2" Grid.Row="2" Margin="15">
             <Button IsCancel="True" Content=" Resume " Margin="5" Style="{StaticResource DialogButton}"/>

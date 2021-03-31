@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Minesweeper.Views"
         mc:Ignorable="d"
-        Title="Minesweeper" Height="675" Width="1200" FontFamily="Quicksand">
+        Title="Minesweeper" Height="675" Width="1200" WindowStartupLocation="CenterScreen">
 
     <Grid>
         <Grid.Background>

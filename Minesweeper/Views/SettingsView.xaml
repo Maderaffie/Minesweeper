@@ -6,7 +6,7 @@
              xmlns:converters="clr-namespace:Minesweeper.Converters"
              xmlns:local="clr-namespace:Minesweeper.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" FontFamily="Quicksand">
+             d:DesignHeight="450" d:DesignWidth="800" FontFamily="{StaticResource Quicksand-Light}">
     <UserControl.Resources>
         <converters:GradientToBoolConverter x:Key="GradientToBoolConverter"/>
     </UserControl.Resources>

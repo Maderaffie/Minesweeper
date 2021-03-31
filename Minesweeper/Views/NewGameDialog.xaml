@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Minesweeper.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="NewGameDialog" Height="325" Width="400" 
+        Title="NewGameDialog" Height="350" Width="400"
         WindowStyle="None" AllowsTransparency="True" WindowStartupLocation="CenterOwner">
     <Window.Background>
         <SolidColorBrush Opacity="0.9" Color="Black"/>
@@ -15,34 +15,37 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.7*"/>
             <RowDefinition/>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.45*"/>
         </Grid.RowDefinitions>
         <Viewbox>
-            <Label Content="Choose difficulty level" Foreground="BlanchedAlmond"></Label>
+            <Label Content="Choose difficulty level" Foreground="BlanchedAlmond" FontFamily="{StaticResource Quicksand-Light}"/>
         </Viewbox>
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <RadioButton x:Name="Beginner" Content="Beginner (9x9, 10 mines)" IsChecked="True" 
+        <Viewbox Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <RadioButton x:Name="Beginner" Content="Beginner (9x9, 10 mines)" IsChecked="True" FontFamily="{StaticResource Quicksand-Light}"
                          Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Beginner}" Foreground="BlanchedAlmond"/>
-            <RadioButton x:Name="Intermediate" Content="Intermediate (16x16, 40 mines)" 
+                <RadioButton x:Name="Intermediate" Content="Intermediate (16x16, 40 mines)" FontFamily="{StaticResource Quicksand-Light}"
                          Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Intermediate}" Foreground="BlanchedAlmond"/>
-            <RadioButton x:Name="Expert" Content="Expert (16x30, 99 mines)" 
+                <RadioButton x:Name="Expert" Content="Expert (16x30, 99 mines)" FontFamily="{StaticResource Quicksand-Light}"
                          Command="{Binding SetNewGameBoardCommand}" CommandParameter="{x:Reference Expert}" Foreground="BlanchedAlmond"/>
-            <RadioButton Content="Custom" x:Name="Custom" Foreground="BlanchedAlmond"/>
-            <UniformGrid Rows="1" Columns="3">
-                <StackPanel Margin="5">
-                    <Label Content="Rows" Foreground="BlanchedAlmond"/>
-                    <xctk:IntegerUpDown Value="{Binding NumberOfRows}" Minimum="10" Maximum="24" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <Label Content="Columns" Foreground="BlanchedAlmond"/>
-                    <xctk:IntegerUpDown Value="{Binding NumberOfColumns}" Minimum="10" Maximum="30" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
-                </StackPanel>
-                <StackPanel Margin="5">
-                    <Label Content="Mines" Foreground="BlanchedAlmond"/>
-                    <xctk:IntegerUpDown Value="{Binding NumberOfMines}" Minimum="10" Maximum="{Binding MaxNumberOfMines}" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
-                </StackPanel>
-            </UniformGrid>
-        </StackPanel>
+                <RadioButton Content="Custom" x:Name="Custom" Foreground="BlanchedAlmond" FontFamily="{StaticResource Quicksand-Light}"/>
+                <UniformGrid Rows="1" Columns="3">
+                    <StackPanel Margin="5">
+                        <Label Content="Rows" Foreground="BlanchedAlmond" FontFamily="{StaticResource Quicksand-Light}"/>
+                        <xctk:IntegerUpDown Value="{Binding NumberOfRows}" Minimum="10" Maximum="24" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
+                    </StackPanel>
+                    <StackPanel Margin="5">
+                        <Label Content="Columns" Foreground="BlanchedAlmond" FontFamily="{StaticResource Quicksand-Light}"/>
+                        <xctk:IntegerUpDown Value="{Binding NumberOfColumns}" Minimum="10" Maximum="30" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
+                    </StackPanel>
+                    <StackPanel Margin="5">
+                        <Label Content="Mines" Foreground="BlanchedAlmond" FontFamily="{StaticResource Quicksand-Light}"/>
+                        <xctk:IntegerUpDown Value="{Binding NumberOfMines}" Minimum="10" Maximum="{Binding MaxNumberOfMines}" IsEnabled="{Binding IsChecked, ElementName=Custom}"/>
+                    </StackPanel>
+                </UniformGrid>
+            </StackPanel>
+        </Viewbox>
+        
         <UniformGrid HorizontalAlignment="Center" Rows="1" Columns="2" Grid.Row="2" Margin="17">
             <Button x:Name="NewGameButton" Content=" Confirm " Grid.Column="0" Margin="5" Style="{StaticResource DialogButton}"
                     Command="{Binding SetDialogResultTrueCommand}" CommandParameter="{x:Reference NewGameButton}"/>

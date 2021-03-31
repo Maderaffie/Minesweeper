@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:resources="clr-namespace:Minesweeper.Resources"
              xmlns:local="clr-namespace:Minesweeper.Views"
-             mc:Ignorable="d" FontFamily="Quicksand"
+             mc:Ignorable="d" FontFamily="{StaticResource Quicksand-Light}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style x:Key="Quicksand-Light">
@@ -17,6 +17,44 @@
             <ColumnDefinition />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2.5*"/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition Height="0.8*"/>
+            </Grid.RowDefinitions>
+            <Viewbox Grid.Row="1" Grid.Column="1">
+                <Button Margin="10" Command="{Binding OpenGameViewCommand}" Style="{StaticResource MenuButton}">
+                    <TextBlock>
+                            New game
+                    </TextBlock>
+                </Button>
+            </Viewbox>
+            <Viewbox Grid.Row="2" Grid.Column="1">
+                <Button Margin="10" Command="{Binding OpenSettingsViewCommand}" Style="{StaticResource MenuButton}">
+                    <TextBlock>
+                            Settings
+                    </TextBlock>
+                </Button>
+            </Viewbox>
+            <Viewbox Grid.Row="3" Grid.Column="1">
+                <Button Margin="10" Command="{Binding OpenCreditsViewCommand}" Style="{StaticResource MenuButton}">
+                    <TextBlock>
+                            Credits
+                    </TextBlock>
+                </Button>
+            </Viewbox>
+        </Grid>
+        
+        <!--
         <Viewbox VerticalAlignment="Bottom">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -26,29 +64,29 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-
-                <StackPanel Grid.Row="1" Grid.Column="1">
-                    <Button Margin="10" Command="{Binding OpenGameViewCommand}" Style="{StaticResource MenuButton}">
-                        <TextBlock>
+                <Button Grid.Row="1" Grid.Column="1" Margin="10" Command="{Binding OpenGameViewCommand}" Style="{StaticResource MenuButton}">
+                    <TextBlock>
                             New game
-                        </TextBlock>
-                    </Button>
-                    <Button Margin="10" Command="{Binding OpenSettingsViewCommand}" Style="{StaticResource MenuButton}">
-                        <TextBlock>
+                    </TextBlock>
+                </Button>
+                <Button Grid.Row="2" Grid.Column="1" Margin="10" Command="{Binding OpenSettingsViewCommand}" Style="{StaticResource MenuButton}">
+                    <TextBlock>
                             Settings
-                        </TextBlock>
-                    </Button>
-                    <Button Margin="10" Command="{Binding OpenCreditsViewCommand}" Style="{StaticResource MenuButton}">
-                        <TextBlock>
+                    </TextBlock>
+                </Button>
+                <Button Grid.Row="3" Grid.Column="1" Margin="10" Command="{Binding OpenCreditsViewCommand}" Style="{StaticResource MenuButton}">
+                    <TextBlock>
                             Credits
-                        </TextBlock>
-                    </Button>
-                </StackPanel>
+                    </TextBlock>
+                </Button>
             </Grid>
         </Viewbox>
+        -->
         <Viewbox Grid.Column="1" VerticalAlignment="Top" Margin="0 50 0 0">
             <resources:GameTitle/>
         </Viewbox>
