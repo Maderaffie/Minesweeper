@@ -87,7 +87,7 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:58.3345px;line-height:1.25;font-family:Hello;-inkscape-font-specification:'Hello, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.45837"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:58.3345px;line-height:1.25;font-family:Hello;-inkscape-font-specification:'Hello, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:0.1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
        x="35.705517"
        y="163.9552"
        id="text107"
@@ -96,6 +96,6 @@
          id="tspan105"
          x="35.705517"
          y="163.9552"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:58.3345px;font-family:Hello;-inkscape-font-specification:'Hello, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:1.45837">Minesweeper</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:58.3345px;font-family:Hello;-inkscape-font-specification:'Hello, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.1">Minesweeper</tspan></text>
   </g>
 </svg>
