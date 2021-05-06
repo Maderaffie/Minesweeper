@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./ReadmeResources/gameTitle.svg" width="50%" height="50%" />
+  <img src="./ReadmeResources/gameTitleDark.svg" width="50%" height="50%" />
 </p>
 
 # About
