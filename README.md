@@ -1,5 +1,10 @@
 <p align="center">
-  <img src="./ReadmeResources/gameTitle.svg" width="50%" height="50%" />
+  <picture>
+  <!-- Use this image if the user's OS setting is light or unset -->
+  <source srcset="./ReadmeResources/gameTitleDark.svg" media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)">
+  <!-- Use this image if the user's OS setting is dark -->
+  <source srcset="./ReadmeResources/gameTitleLight.svg" media="(prefers-color-scheme: dark)">
+  </picture>
 </p>
 
 # About
